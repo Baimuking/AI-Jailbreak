@@ -111,6 +111,7 @@ function renderCards() {
         <p>${esc(c.summary || "")}</p>
         <div class="actions">
           <button data-copy="${esc(c.id)}">复制正文</button>
+          ${c.kind === "prompt" ? `<button data-install="${esc(c.id)}">复制安装命令</button>` : ""}
           <a class="ghost" href="https://github.com/Baimuking/AI-Jailbreak/blob/main/${esc(c.path)}" target="_blank" rel="noopener">源文件</a>
           <span class="src">来源：${src}</span>
         </div>
@@ -127,6 +128,21 @@ function renderCards() {
         await navigator.clipboard.writeText(text);
         btn.textContent = "已复制";
         setTimeout(() => (btn.textContent = "复制正文"), 1200);
+      } catch {
+        btn.textContent = "复制失败";
+      }
+    });
+  });
+
+  document.querySelectorAll("[data-install]").forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      const card = state.data.cards.find((c) => c.id === btn.dataset.install);
+      const client = (card && card.clients && card.clients[0]) || "all";
+      const cmd = `python cli/pojia.py apply ${card.id} --client ${client}`;
+      try {
+        await navigator.clipboard.writeText(cmd);
+        btn.textContent = "已复制命令";
+        setTimeout(() => (btn.textContent = "复制安装命令"), 1400);
       } catch {
         btn.textContent = "复制失败";
       }

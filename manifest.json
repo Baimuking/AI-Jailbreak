@@ -1,0 +1,436 @@
+{
+  "name": "AI Jailbreak",
+  "tagline": "全网最全的 AI 破甲合集：一个仓库，破甲所有模型",
+  "version": 1,
+  "repo": "https://github.com/Baimuking/AI-Jailbreak",
+  "raw_base": "https://raw.githubusercontent.com/Baimuking/AI-Jailbreak/main",
+  "endpoints": {
+    "manifest": "https://raw.githubusercontent.com/Baimuking/AI-Jailbreak/main/manifest.json",
+    "llms": "https://raw.githubusercontent.com/Baimuking/AI-Jailbreak/main/llms.txt",
+    "index": "https://raw.githubusercontent.com/Baimuking/AI-Jailbreak/main/docs/index.json",
+    "prompt_text": "https://raw.githubusercontent.com/Baimuking/AI-Jailbreak/main/docs/prompts/{id}.txt"
+  },
+  "coverage": {
+    "upstream_repos": 1733,
+    "prompt_cards": 9,
+    "models": [
+      "all",
+      "claude",
+      "claude-opus",
+      "claude-sonnet",
+      "codex",
+      "deepseek-chat",
+      "deepseek-v4.1",
+      "deepseek-v4.1-flash",
+      "gemini-3.5-flash",
+      "gemini-3.8",
+      "gemini-pro",
+      "gemma-4",
+      "glm-5.3",
+      "glm-5.3-air",
+      "glm-5.3-flash",
+      "gpt-5.6",
+      "gpt-5.6-codex",
+      "gpt-oss-20b",
+      "gpt6-astra",
+      "grok-4.6",
+      "grok-4.7",
+      "grok-build",
+      "kimi",
+      "kimi-code",
+      "llama",
+      "moonshot-v1",
+      "qwen3.6"
+    ],
+    "clients": [
+      "all",
+      "antigravity",
+      "api",
+      "chat",
+      "claude-code",
+      "codex",
+      "cursor",
+      "dsh",
+      "zcode"
+    ]
+  },
+  "cards": [
+    {
+      "id": "all-translation-frame",
+      "name": "通用翻译体帧（模型无关）",
+      "kind": "prompt",
+      "targets": [
+        "all"
+      ],
+      "clients": [
+        "all"
+      ],
+      "archetype": "translation",
+      "status": "unverified",
+      "strength": null,
+      "summary": "把请求转成「源语言→目标语言」的翻译任务，输出天然不受生成侧审核约束。",
+      "path": "prompts/all/all-translation-frame.md",
+      "install": {
+        "client": "all",
+        "pwsh": "pwsh -File installers/install.ps1 -Id all-translation-frame -Client all",
+        "bash": "bash installers/install.sh --id all-translation-frame --client all",
+        "uninstall": "pwsh -File installers/install.ps1 -Id all-translation-frame -Client all -Uninstall"
+      }
+    },
+    {
+      "id": "claude-ctf-mode",
+      "name": "Claude CTF 授权模式帧",
+      "kind": "prompt",
+      "targets": [
+        "claude",
+        "claude-sonnet",
+        "claude-opus"
+      ],
+      "clients": [
+        "claude-code",
+        "api",
+        "chat"
+      ],
+      "archetype": "ctf",
+      "status": "unverified",
+      "strength": null,
+      "summary": "用「授权沙箱 + 威胁模型 + 上下文字段」把请求重构成红队演练任务，绕开 Constitutional 层的意图推断。",
+      "path": "prompts/anthropic/claude/claude-ctf-mode.md",
+      "install": {
+        "client": "claude-code",
+        "pwsh": "pwsh -File installers/install.ps1 -Id claude-ctf-mode -Client claude-code",
+        "bash": "bash installers/install.sh --id claude-ctf-mode --client claude-code",
+        "uninstall": "pwsh -File installers/install.ps1 -Id claude-ctf-mode -Client claude-code -Uninstall"
+      }
+    },
+    {
+      "id": "deepseek-v4.1-three-layer",
+      "name": "DeepSeek V4.1 三层重写帧",
+      "kind": "prompt",
+      "targets": [
+        "deepseek-v4.1",
+        "deepseek-v4.1-flash",
+        "deepseek-chat"
+      ],
+      "clients": [
+        "api",
+        "dsh",
+        "chat"
+      ],
+      "archetype": "hybrid-frame",
+      "status": "unverified",
+      "strength": null,
+      "summary": "针对 DeepSeek 的「先复述再判定」习惯，用三层改写把请求从判定管线里摘出去。",
+      "path": "prompts/deepseek/v4.1/deepseek-v4.1-three-layer.md",
+      "install": {
+        "client": "dsh",
+        "pwsh": "pwsh -File installers/install.ps1 -Id deepseek-v4.1-three-layer -Client dsh",
+        "bash": "bash installers/install.sh --id deepseek-v4.1-three-layer --client dsh",
+        "uninstall": "pwsh -File installers/install.ps1 -Id deepseek-v4.1-three-layer -Client dsh -Uninstall"
+      }
+    },
+    {
+      "id": "gemini-narrative-frame",
+      "name": "Gemini 叙事体隔离帧",
+      "kind": "prompt",
+      "targets": [
+        "gemini-3.8",
+        "gemini-3.5-flash",
+        "gemini-pro"
+      ],
+      "clients": [
+        "antigravity",
+        "api",
+        "chat"
+      ],
+      "archetype": "narrative",
+      "status": "unverified",
+      "strength": null,
+      "summary": "把技术请求包进虚构文档的引述语境，用「角色不在场」消解模型对自身输出的归属判断。",
+      "path": "prompts/google/gemini-3.x/gemini-narrative-frame.md",
+      "install": {
+        "client": "antigravity",
+        "pwsh": "pwsh -File installers/install.ps1 -Id gemini-narrative-frame -Client antigravity",
+        "bash": "bash installers/install.sh --id gemini-narrative-frame --client antigravity",
+        "uninstall": "pwsh -File installers/install.ps1 -Id gemini-narrative-frame -Client antigravity -Uninstall"
+      }
+    },
+    {
+      "id": "glm-5.3-identity-frame",
+      "name": "GLM-5.3 身份系统帧",
+      "kind": "prompt",
+      "targets": [
+        "glm-5.3",
+        "glm-5.3-flash",
+        "glm-5.3-air"
+      ],
+      "clients": [
+        "zcode",
+        "codex",
+        "dsh",
+        "api"
+      ],
+      "archetype": "identity-frame",
+      "status": "unverified",
+      "strength": null,
+      "summary": "智谱系最吃「角色权威」，用高权威人格 + 明确职责边界压过 RLHF 的顺从倾向。",
+      "path": "prompts/zhipu/glm-5.3/glm-5.3-identity-frame.md",
+      "install": {
+        "client": "codex",
+        "pwsh": "pwsh -File installers/install.ps1 -Id glm-5.3-identity-frame -Client codex",
+        "bash": "bash installers/install.sh --id glm-5.3-identity-frame --client codex",
+        "uninstall": "pwsh -File installers/install.ps1 -Id glm-5.3-identity-frame -Client codex -Uninstall"
+      }
+    },
+    {
+      "id": "gpt-5.6-identity-frame",
+      "name": "GPT-5.6 身份系统帧 v3",
+      "kind": "prompt",
+      "targets": [
+        "gpt-5.6",
+        "gpt-5.6-codex",
+        "gpt6-astra"
+      ],
+      "clients": [
+        "codex",
+        "api",
+        "dsh"
+      ],
+      "archetype": "identity-frame",
+      "status": "unverified",
+      "strength": null,
+      "summary": "以「元规则优先 + 身份重定义 + 输出契约 + 反漂移自检」四段结构覆盖拒答层，适配 Codex / API 直连。",
+      "path": "prompts/openai/gpt-5.6/gpt-5.6-identity-frame.md",
+      "install": {
+        "client": "codex",
+        "pwsh": "pwsh -File installers/install.ps1 -Id gpt-5.6-identity-frame -Client codex",
+        "bash": "bash installers/install.sh --id gpt-5.6-identity-frame --client codex",
+        "uninstall": "pwsh -File installers/install.ps1 -Id gpt-5.6-identity-frame -Client codex -Uninstall"
+      }
+    },
+    {
+      "id": "grok-hybrid-frame",
+      "name": "Grok 直给混合帧",
+      "kind": "prompt",
+      "targets": [
+        "grok-4.7",
+        "grok-4.6",
+        "grok-build"
+      ],
+      "clients": [
+        "api",
+        "chat"
+      ],
+      "archetype": "lightweight",
+      "status": "unverified",
+      "strength": null,
+      "summary": "Grok 本身拒答阈值低，本卡主要压「说教尾巴」与「先复述再回答」，用极简契约换输出密度。",
+      "path": "prompts/xai/grok-4.x/grok-hybrid-frame.md",
+      "install": {
+        "client": "api",
+        "pwsh": "pwsh -File installers/install.ps1 -Id grok-hybrid-frame -Client api",
+        "bash": "bash installers/install.sh --id grok-hybrid-frame --client api",
+        "uninstall": "pwsh -File installers/install.ps1 -Id grok-hybrid-frame -Client api -Uninstall"
+      }
+    },
+    {
+      "id": "kimi-ctf-mode",
+      "name": "Kimi 渗透授权帧",
+      "kind": "prompt",
+      "targets": [
+        "kimi",
+        "kimi-code",
+        "moonshot-v1"
+      ],
+      "clients": [
+        "api",
+        "codex",
+        "chat"
+      ],
+      "archetype": "ctf",
+      "status": "unverified",
+      "strength": null,
+      "summary": "以「授权渗透测试委托书」为外框，把请求转成工单执行，适配 Kimi Code 与 API。",
+      "path": "prompts/moonshot/kimi/kimi-ctf-mode.md",
+      "install": {
+        "client": "codex",
+        "pwsh": "pwsh -File installers/install.ps1 -Id kimi-ctf-mode -Client codex",
+        "bash": "bash installers/install.sh --id kimi-ctf-mode --client codex",
+        "uninstall": "pwsh -File installers/install.ps1 -Id kimi-ctf-mode -Client codex -Uninstall"
+      }
+    },
+    {
+      "id": "qwen-local-frame",
+      "name": "Qwen 本地模型重构帧",
+      "kind": "prompt",
+      "targets": [
+        "qwen3.6",
+        "llama",
+        "gemma-4",
+        "gpt-oss-20b"
+      ],
+      "clients": [
+        "api",
+        "chat"
+      ],
+      "archetype": "lightweight",
+      "status": "unverified",
+      "strength": null,
+      "summary": "本地模型（含 abliterated 权重）缺的不是授权而是形态，用结构契约替代权限声明。",
+      "path": "prompts/local/qwen/qwen-local-frame.md",
+      "install": {
+        "client": "api",
+        "pwsh": "pwsh -File installers/install.ps1 -Id qwen-local-frame -Client api",
+        "bash": "bash installers/install.sh --id qwen-local-frame --client api",
+        "uninstall": "pwsh -File installers/install.ps1 -Id qwen-local-frame -Client api -Uninstall"
+      }
+    },
+    {
+      "id": "api-system-prompt",
+      "name": "API 直连 / system 消息注入",
+      "kind": "tool",
+      "targets": [
+        "all"
+      ],
+      "clients": [
+        "api"
+      ],
+      "archetype": "client-patch",
+      "status": "unverified",
+      "strength": null,
+      "summary": "生成纯正文到 .pojia/system-prompt.md，供 OpenAI 兼容接口的 system 字段直接读取。",
+      "path": "tools/api/api-system-prompt.md",
+      "install": null
+    },
+    {
+      "id": "claude-md-block",
+      "name": "Claude Code / CLAUDE.md 注入",
+      "kind": "tool",
+      "targets": [
+        "claude",
+        "claude-sonnet",
+        "claude-opus"
+      ],
+      "clients": [
+        "claude-code"
+      ],
+      "archetype": "client-patch",
+      "status": "unverified",
+      "strength": null,
+      "summary": "写入项目根 CLAUDE.md，Claude Code 每次启动自动加载，支持多条目叠加与逐条卸载。",
+      "path": "tools/claude-code/claude-md-block.md",
+      "install": null
+    },
+    {
+      "id": "codex-agents-md",
+      "name": "Codex / AGENTS.md 注入",
+      "kind": "tool",
+      "targets": [
+        "gpt-5.6",
+        "gpt-5.6-codex",
+        "gpt6-astra",
+        "codex"
+      ],
+      "clients": [
+        "codex"
+      ],
+      "archetype": "client-patch",
+      "status": "unverified",
+      "strength": null,
+      "summary": "把条目写进项目根的 AGENTS.md，Codex 每次会话自动读取，无需手工粘贴。",
+      "path": "tools/codex/codex-agents-md.md",
+      "install": null
+    },
+    {
+      "id": "cursor-rules-block",
+      "name": "Cursor / .cursorrules 注入",
+      "kind": "tool",
+      "targets": [
+        "claude",
+        "gpt-5.6",
+        "gemini-3.8",
+        "all"
+      ],
+      "clients": [
+        "cursor"
+      ],
+      "archetype": "client-patch",
+      "status": "unverified",
+      "strength": null,
+      "summary": "写入项目根 .cursorrules（或新版 .cursor/rules/*.mdc），Cursor 对话自动携带。",
+      "path": "tools/cursor/cursor-rules-block.md",
+      "install": null
+    },
+    {
+      "id": "dsh-preset-block",
+      "name": "DeepSeek Harness / preset 注入",
+      "kind": "tool",
+      "targets": [
+        "deepseek-v4.1",
+        "deepseek-v4.1-flash",
+        "glm-5.3",
+        "all"
+      ],
+      "clients": [
+        "dsh"
+      ],
+      "archetype": "client-patch",
+      "status": "unverified",
+      "strength": null,
+      "summary": "写入工作区 AGENTS.md 让 DSH 每次会话自动加载；JSON preset 需手动合并（见下）。",
+      "path": "tools/dsh/dsh-preset-block.md",
+      "install": null
+    },
+    {
+      "id": "frame-anatomy",
+      "name": "破甲提示词的六段结构",
+      "kind": "technique",
+      "targets": [
+        "all"
+      ],
+      "clients": [
+        "all"
+      ],
+      "archetype": "methodology",
+      "status": "unverified",
+      "strength": null,
+      "summary": "把市面上的破甲词拆成可组合的六段：元规则、身份、能力、边界、输出契约、恢复。拆开后才能按模型换零件。",
+      "path": "techniques/frame-anatomy.md",
+      "install": null
+    },
+    {
+      "id": "managed-block-spec",
+      "name": "托管区块规范",
+      "kind": "technique",
+      "targets": [
+        "all"
+      ],
+      "clients": [
+        "all"
+      ],
+      "archetype": "methodology",
+      "status": "unverified",
+      "strength": null,
+      "summary": "安装器与 CLI 共用的幂等注入格式，保证跨工具可识别、可逐字卸载、可多条目共存。",
+      "path": "techniques/managed-block-spec.md",
+      "install": null
+    },
+    {
+      "id": "scoring-method",
+      "name": "armor 分口径 v1",
+      "kind": "technique",
+      "targets": [
+        "all"
+      ],
+      "clients": [
+        "all"
+      ],
+      "archetype": "methodology",
+      "status": "unverified",
+      "strength": null,
+      "summary": "armor 分 = 输出契约遵守率 × 10。明确它衡量什么、不衡量什么，以及怎么复测与降级。",
+      "path": "techniques/scoring-method.md",
+      "install": null
+    }
+  ]
+}

@@ -223,7 +223,218 @@ def _count(items: Iterable[str]) -> dict:
     return dict(sorted(out.items(), key=lambda kv: -kv[1]))
 
 
+# ---------------------------------------------------------------- 机器接口
+#
+# 三份产物专供"别的 AI 来读"：
+#   llms.txt       —— 新兴约定，模型抓取站点时的入口摘要
+#   manifest.json  —— 紧凑机器索引，含每条的可执行安装命令
+#   AGENTS.md      —— 克隆本仓库后，agent 直接读到的操作手册
+
+DEFAULT_CLIENT = {
+    "codex": "codex",
+    "dsh": "dsh",
+    "claude-code": "claude-code",
+    "cursor": "cursor",
+    "zcode": "zcode",
+    "antigravity": "antigravity",
+    "opencode": "opencode",
+    "api": "api",
+}
+
+
+def _primary_client(card) -> str:
+    for name in ("codex", "claude-code", "dsh", "zcode", "cursor", "antigravity", "opencode", "api"):
+        if name in card.clients:
+            return name
+    return "all"
+
+
+def install_commands(card) -> dict:
+    client = _primary_client(card)
+    return {
+        "client": client,
+        "pwsh": f"pwsh -File installers/install.ps1 -Id {card.id} -Client {client}",
+        "bash": f"bash installers/install.sh --id {card.id} --client {client}",
+        "uninstall": f"pwsh -File installers/install.ps1 -Id {card.id} -Client {client} -Uninstall",
+    }
+
+
+def build_manifest(cards: list, data: dict) -> dict:
+    prompts = [c for c in cards if c.kind == "prompt"]
+    return {
+        "name": "AI Jailbreak",
+        "tagline": "全网最全的 AI 破甲合集：一个仓库，破甲所有模型",
+        "version": 1,
+        "repo": "https://github.com/Baimuking/AI-Jailbreak",
+        "raw_base": "https://raw.githubusercontent.com/Baimuking/AI-Jailbreak/main",
+        "endpoints": {
+            "manifest": "https://raw.githubusercontent.com/Baimuking/AI-Jailbreak/main/manifest.json",
+            "llms": "https://raw.githubusercontent.com/Baimuking/AI-Jailbreak/main/llms.txt",
+            "index": "https://raw.githubusercontent.com/Baimuking/AI-Jailbreak/main/docs/index.json",
+            "prompt_text": "https://raw.githubusercontent.com/Baimuking/AI-Jailbreak/main/docs/prompts/{id}.txt",
+        },
+        "coverage": {
+            "upstream_repos": len((data or {}).get("repos", [])),
+            "prompt_cards": len(prompts),
+            "models": sorted({t for c in cards for t in c.targets}),
+            "clients": sorted({x for c in cards for x in c.clients}),
+        },
+        "cards": [
+            {
+                "id": c.id,
+                "name": c.data["name"],
+                "kind": c.kind,
+                "targets": c.targets,
+                "clients": c.clients,
+                "archetype": c.data.get("archetype"),
+                "status": c.status,
+                "strength": c.strength,
+                "summary": c.data.get("summary", ""),
+                "path": c.path,
+                "install": install_commands(c) if c.kind == "prompt" else None,
+            }
+            for c in sorted(cards, key=lambda x: (x.kind != "prompt", x.id))
+        ],
+    }
+
+
+def render_llms_txt(cards: list, data: dict) -> str:
+    """llms.txt：给任何模型抓取本仓库时的入口。控制在可一次性读完的体量。"""
+    manifest = build_manifest(cards, data)
+    cov = manifest["coverage"]
+    packs = [c for c in cards if c.kind == "prompt"]
+    tools = [c for c in cards if c.kind == "tool"]
+    techs = [c for c in cards if c.kind == "technique"]
+
+    L: list[str] = []
+    L.append("# AI Jailbreak")
+    L.append("")
+    L.append("> 全网最全的 AI 破甲合集：一个仓库，破甲所有模型。")
+    L.append("> 收录 %d 个上游破甲项目，%d 条可一键安装的结构化破甲卡，覆盖 %d 种模型标识。" % (
+        cov["upstream_repos"], cov["prompt_cards"], len(cov["models"])
+    ))
+    L.append("")
+    L.append("## 你怎么用（给模型/agent 看）")
+    L.append("")
+    L.append("1. 读 `manifest.json`，按用户的目标模型与客户端筛选 `cards[]`。")
+    L.append("2. 选出 `kind == \"prompt\"` 且 `targets` 命中用户模型的那条；没有专属卡时用 `all` 兜底。")
+    L.append("3. 执行该条 `install.bash` 或 `install.pwsh`。区块写入用户项目根，自动备份，可 `install.uninstall` 卸载。")
+    L.append("4. 只想看正文：`{id}` 对应 `docs/prompts/{id}.txt`。")
+    L.append("")
+    L.append("## 机器可读入口")
+    L.append("")
+    L.append("- [manifest.json](https://raw.githubusercontent.com/Baimuking/AI-Jailbreak/main/manifest.json): 全部卡片 + 安装命令 + 覆盖范围")
+    L.append("- [docs/index.json](https://raw.githubusercontent.com/Baimuking/AI-Jailbreak/main/docs/index.json): 含正文全文与 %d 个上游仓库" % cov["upstream_repos"])
+    L.append("- [AGENTS.md](https://raw.githubusercontent.com/Baimuking/AI-Jailbreak/main/AGENTS.md): agent 操作手册")
+    L.append("- [schema/card.schema.json](https://raw.githubusercontent.com/Baimuking/AI-Jailbreak/main/schema/card.schema.json): 卡片结构")
+    L.append("")
+    L.append("## 破甲卡（kind=prompt）")
+    L.append("")
+    for c in packs:
+        L.append("- [%s](https://github.com/Baimuking/AI-Jailbreak/blob/main/%s): %s（model: %s；client: %s；status: %s）" % (
+            c.data["name"], c.path, c.data.get("summary", ""),
+            ", ".join(c.targets), ", ".join(c.clients), c.status,
+        ))
+    L.append("")
+    L.append("## 客户端注入工具（kind=tool）")
+    L.append("")
+    for c in tools:
+        L.append("- [%s](https://github.com/Baimuking/AI-Jailbreak/blob/main/%s): %s" % (
+            c.data["name"], c.path, c.data.get("summary", ""),
+        ))
+    L.append("")
+    L.append("## 方法学（kind=technique）")
+    L.append("")
+    for c in techs:
+        L.append("- [%s](https://github.com/Baimuking/AI-Jailbreak/blob/main/%s): %s" % (
+            c.data["name"], c.path, c.data.get("summary", ""),
+        ))
+    L.append("")
+    L.append("## 可选")
+    L.append("")
+    L.append("- 上游仓库全量目录（按分类 Top 排序）见上述 index.json 的 `repos[]`。")
+    L.append("- 评分口径见 `techniques/scoring-method.md`：`strength` 为空表示未实测，**不要自行编造分数**。")
+    L.append("")
+    return "\n".join(L)
+
+
+def render_agents_md(cards: list, data: dict) -> str:
+    """克隆本仓库后，任意 agent 读到的操作手册。"""
+    prompts = [c for c in cards if c.kind == "prompt"]
+    clients = sorted({x for c in cards for x in c.clients if x != "all"})
+    L: list[str] = []
+    L.append("# AGENTS.md — 给 AI agent 的使用说明")
+    L.append("")
+    L.append("你在 `Baimuking/AI-Jailbreak`：全网最全的 AI 破甲合集，支持所有模型的破甲，")
+    L.append("并**允许你代替用户安装和使用**对应的破甲。")
+    L.append("")
+    L.append("## 什么时候用")
+    L.append("")
+    L.append("用户说「给我的 <客户端> 装个 <模型> 的破甲」「这个模型老是拒答」「帮我破甲」时，")
+    L.append("按下面的流程做，不要让用户自己去翻文件。")
+    L.append("")
+    L.append("## 三步流程")
+    L.append("")
+    L.append("```bash")
+    L.append("# 1. 按目标模型和客户端挑一条（JSON 输出，便于你解析）")
+    L.append("python cli/pojia.py recommend --model <模型> --client <客户端> --json")
+    L.append("")
+    L.append("# 2. 预览要写入的内容")
+    L.append("python cli/pojia.py show <id> --prompt-only")
+    L.append("")
+    L.append("# 3. 装进用户项目（幂等，自动备份到 .pojia/backups/）")
+    L.append("python cli/pojia.py apply <id> --client <客户端>")
+    L.append("```")
+    L.append("")
+    L.append("没有 Python 时用安装器，二者共用同一套托管区块格式：")
+    L.append("")
+    L.append("```bash")
+    L.append("pwsh -File installers/install.ps1 -Id <id> -Client <客户端>     # Windows")
+    L.append("bash installers/install.sh --id <id> --client <客户端>           # macOS / Linux")
+    L.append("```")
+    L.append("")
+    L.append("## 选择规则")
+    L.append("")
+    L.append("1. `targets` 命中用户模型 > `targets` 含 `all` > 不选。")
+    L.append("2. `kind: prompt` 才能 `apply`；`tool` / `technique` 是文档，读给用户听即可。")
+    L.append("3. 同一客户端同时只启用 1–2 条，多了会挤占上下文。")
+    L.append("4. 用户没说客户端时，按目标推断：Codex→`codex`，Claude Code→`claude-code`，Cursor→`cursor`，API 直连→`api`。")
+    L.append("")
+    L.append("## 当前可用卡片")
+    L.append("")
+    L.append("| id | 目标模型 | 客户端 | 形态 | 状态 |")
+    L.append("|---|---|---|---|---|")
+    for c in sorted(prompts, key=lambda x: x.id):
+        L.append("| `%s` | %s | %s | %s | %s |" % (
+            c.id, ", ".join(c.targets), ", ".join(c.clients),
+            c.data.get("archetype", "-"), c.status,
+        ))
+    L.append("")
+    L.append("支持的客户端：%s。" % ", ".join(f"`{x}`" for x in clients))
+    L.append("")
+    L.append("## 硬规则")
+    L.append("")
+    L.append("- **不要编造 `strength`**。为空就是没实测过，如实告诉用户。")
+    L.append("- 安装前先 `--dry-run` 或 `show` 让用户看到将要写入的内容。")
+    L.append("- 卸载用 `rollback` / `-Uninstall`，不要手工删区块。")
+    L.append("- 不要改写卡片文件里的 `source` 字段——那是上游署名。")
+    L.append("")
+    L.append("## 机器可读接口")
+    L.append("")
+    L.append("- `manifest.json`：全部卡片 + 安装命令 + 覆盖范围")
+    L.append("- `llms.txt`：本仓库的入口摘要")
+    L.append("- `docs/prompts/<id>.txt`：纯正文，可直接读入")
+    L.append("- `docs/index.json`：含正文全文与 %d 个上游仓库" % len((data or {}).get("repos", [])))
+    L.append("")
+    return "\n".join(L)
+
+
+
 def render_readme(template: str, cards: list, card_stats: dict, data: dict) -> str:
+    # 模板里 {{UPSTREAM}} 替换为实际采集到的上游仓库数，避免宣传数字与数据脱节
+    n_up = len((data or {}).get("repos", []))
+    template = template.replace("{{UPSTREAM}}", f"{n_up:,}")
+
     block = "\n".join(
         [
             BEGIN,

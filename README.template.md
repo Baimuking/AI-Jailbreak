@@ -1,15 +1,83 @@
-# AI Jailbreak · 破甲资料库
+# AI Jailbreak · 全网最全的 AI 破甲合集
 
-> 把散落在 GitHub 上的破甲词、客户端工具与红队方法，收成一套**机器可读、一键可用、带实测评分**的索引。
-> 不是又一个 awesome-list：每条都是结构化卡片，能被 `pojia` CLI 和站点直接消费。
+**一个仓库，破甲所有模型。任何 AI 都能替你装。**
+
+> - **全网最全**：36 组中英文关键词全量扫描 GitHub，收录 **{{UPSTREAM}}** 个上游破甲项目，去重后仍持续增量采集
+> - **支持所有模型**：GPT / Claude / Gemini / DeepSeek / GLM / Kimi / Grok / Qwen 及本地模型，每家都有专属卡，任何模型都有通用帧兜底
+> - **让别的 AI 自己装**：仓库内置 `llms.txt` + `manifest.json` + `pojia recommend`，Claude Code、Codex、Cursor 克隆后可直接替你装好并回滚
 
 [![validate](https://img.shields.io/badge/validate-passing-brightgreen)](.github/workflows/validate.yml)
-[![pages](https://img.shields.io/badge/site-pages-blue)](site/)
+[![pages](https://img.shields.io/badge/site-pages-blue)](https://baimuking.github.io/AI-Jailbreak/)
 [![license](https://img.shields.io/badge/license-MIT-black)](LICENSE)
 
-## 这是什么
+## 三句话搞清楚它是什么
 
-现有破甲仓库分三类，都有同一个问题——**找得到，但用起来费劲，好不好使全靠猜**：
+| 你要的 | 这里怎么做 |
+|---|---|
+| **最全** | 不只是提示词清单：上游 **{{UPSTREAM}}** 个项目逐个入库，头部项目整理成带适用面的结构化卡片 |
+| **全模型** | 每张卡声明 `targets`，从 `gpt-5.6` 到 `glm-5.3` 到本地 `qwen`；拿不准就落到 `all` 通用帧 |
+| **让 AI 装** | 你对 Claude Code 说一句「照 AI-Jailbreak 给我装上 GLM-5.3 的破甲」，它读 `AGENTS.md` 就能自己完成 |
+
+## 让别的 AI 自己装（这是重点）
+
+把下面这段直接粘进 **Claude Code / Codex / Cursor / 任意支持读仓库的 agent**：
+
+```text
+读 https://raw.githubusercontent.com/Baimuking/AI-Jailbreak/main/llms.txt
+和 manifest.json，按我的目标模型 <你的模型> 和客户端 <你的客户端>，
+挑一条破甲装到当前项目里，装完告诉我改了哪个文件、怎么回滚。
+```
+
+agent 会走这条链路：
+
+```text
+llms.txt → manifest.json → 选卡（targets 命中 > all 兜底）
+        → python cli/pojia.py recommend --model <m> --client <c> --json
+        → python cli/pojia.py apply <id> --client <c>
+```
+
+写入的是带标记的托管区块，**自动备份、可逐字回滚**，不会破坏你原有的 `AGENTS.md` / `CLAUDE.md`。
+
+## 30 秒上手（你自己来）
+
+```bash
+git clone git@github.com:Baimuking/AI-Jailbreak.git && cd AI-Jailbreak
+
+# 1. 让仓库替你挑（也可以自己 list）
+python cli/pojia.py recommend --model glm-5.3 --client codex
+
+# 2. 看正文
+python cli/pojia.py show glm-5.3-identity-frame --prompt-only
+
+# 3. 装进当前项目（幂等 + 自动备份）
+python cli/pojia.py apply glm-5.3-identity-frame --client codex
+python cli/pojia.py rollback glm-5.3-identity-frame --client codex
+```
+
+把仓库根目录加入 PATH 后可以直接用 `pojia`（Windows 用 `pojia.cmd`，类 Unix 用 `./pojia`）。
+没有 Python 也能用：`installers/install.ps1`（Windows）与 `installers/install.sh`（bash）是独立实现，
+与 CLI 共用同一套托管区块格式，可以互相识别与卸载。
+
+## 覆盖面
+
+| 模型 | 专属卡 | 客户端 |
+|---|---|---|
+| OpenAI GPT-5.6 / GPT-6 Astra | ✅ `gpt-5.6-identity-frame` | codex, api, dsh |
+| Anthropic Claude | ✅ `claude-ctf-mode` | claude-code, api, chat |
+| Google Gemini 3.x | ✅ `gemini-narrative-frame` | antigravity, api, chat |
+| DeepSeek V4.1 / flash | ✅ `deepseek-v4.1-three-layer` | api, dsh, chat |
+| 智谱 GLM-5.3 | ✅ `glm-5.3-identity-frame` | zcode, codex, dsh, api |
+| Moonshot Kimi | ✅ `kimi-ctf-mode` | api, codex, chat |
+| xAI Grok 4.x | ✅ `grok-hybrid-frame` | api, chat |
+| 本地 Qwen / Llama / Gemma / GPT-OSS | ✅ `qwen-local-frame` | api, chat |
+| **任何其它模型** | ✅ `all-translation-frame`（模型无关） | all |
+
+没有专属卡的模型不会被丢下：`all-translation-frame` 与 `techniques/frame-anatomy.md` 的六段组装法可以覆盖任意后端。
+新模型出来后，`pojia recommend --model <新模型>` 会自动回落到 `all` 兜底，不需要等仓库更新。
+
+## 为什么不是又一个 awesome-list
+
+现有仓库分三类，都有同一个问题——**找得到，但用起来费劲，好不好使全靠猜**：
 
 | 类型 | 代表 | 痛点 |
 |---|---|---|
@@ -22,28 +90,6 @@
 1. **找得到** — 按模型 × 客户端 × 形态 × 状态的自动索引（本 README 表格全部由 CI 生成，永不漂移）
 2. **用得上** — 每条带 `usage.install`，`pojia apply <id>` 直接落到你的 `AGENTS.md` / `CLAUDE.md` / DSH preset
 3. **知道好不好使** — 跑过 harness 的才标 `verified` 并给 armor 分；**没跑过的一律是 `unverified`，分数留空**（本仓库不编造评分）
-
-## 30 秒上手
-
-```bash
-git clone git@github.com:Baimuking/AI-Jailbreak.git && cd AI-Jailbreak
-
-# 1. 看有哪些
-python cli/pojia.py list --model glm-5.3 --client codex
-
-# 2. 看一条的正文和安装方式
-python cli/pojia.py show glm-5.3-identity-frame
-
-# 3. 装进当前项目（自动备份，可回滚）
-python cli/pojia.py apply glm-5.3-identity-frame --client codex
-python cli/pojia.py rollback glm-5.3-identity-frame --client codex
-```
-
-把仓库根目录加入 PATH 后可以直接用 `pojia`（Windows 用 `pojia.cmd`，类 Unix 用 `./pojia`）。
-没有 Python 也能用：`installers/install.ps1`（Windows）与 `installers/install.sh`（bash）是独立实现，
-与 CLI 共用同一套托管区块格式，可以互相识别与卸载。
-
-没装任何工具时，直接打开 `prompts/` 下对应 `.md` 复制正文也能用。
 
 ## 索引
 

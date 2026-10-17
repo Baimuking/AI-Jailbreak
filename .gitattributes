@@ -20,5 +20,8 @@
 
 # 生成物（GitHub Linguist 统计忽略）
 README.md linguist-generated
+AGENTS.md linguist-generated
+llms.txt linguist-generated
+manifest.json linguist-generated
 site/data.json linguist-generated
 docs/index.json linguist-generated

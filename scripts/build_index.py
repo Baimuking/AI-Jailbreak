@@ -38,10 +38,15 @@ def build() -> dict[str, str]:
     template = template_path.read_text(encoding="utf-8")
 
     payload = render.build_index_payload(loaded, data)
+    manifest = render.build_manifest(loaded, data)
     outputs = {
         "README.md": render.render_readme(template, loaded, st, data),
         "docs/index.json": json.dumps(payload, ensure_ascii=False, indent=2) + "\n",
         "site/data.json": json.dumps(payload, ensure_ascii=False, indent=2) + "\n",
+        # 给"别的 AI"读的三份产物
+        "manifest.json": json.dumps(manifest, ensure_ascii=False, indent=2) + "\n",
+        "llms.txt": render.render_llms_txt(loaded, data),
+        "AGENTS.md": render.render_agents_md(loaded, data),
     }
 
     # 安装器只需纯正文，不必解析 front matter：单独导出 docs/prompts/<id>.txt

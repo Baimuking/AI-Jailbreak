@@ -234,6 +234,63 @@ def cmd_rollback(args) -> int:
     return 0
 
 
+def cmd_recommend(args) -> int:
+    """按目标模型 / 客户端挑出最合适的一条或多条。
+
+    排序优先级：kind=prompt > targets 精确命中 > 含 all > 状态 > armor 分。
+    这是 agent 调用本仓库的主入口（--json 便于程序解析）。
+    """
+    cards = [c for c in load() if c.kind == "prompt"]
+    model = (args.model or "").lower()
+    client = (args.client or "").lower()
+
+    def score(c) -> tuple:
+        targets = [t.lower() for t in c.targets]
+        exact = 1 if model and any(model == t or model in t or t in model for t in targets) else 0
+        generic = 1 if "all" in targets else 0
+        cl = [x.lower() for x in c.clients]
+        cl_hit = 1 if client and (client in cl or "all" in cl) else 0
+        status_rank = {"verified": 4, "community": 3, "unverified": 2, "stale": 1, "archived": 0}.get(c.status, 0)
+        return (exact, cl_hit, generic, status_rank, c.strength or 0)
+
+    ranked = sorted(cards, key=score, reverse=True)
+    if model:
+        ranked = [c for c in ranked if score(c)[0] or score(c)[2]]
+    if args.limit:
+        ranked = ranked[: args.limit]
+
+    def pick_client(c) -> str:
+        """安装时优先用用户指定的客户端，其次卡片里排第一的。"""
+        if client and client in [x.lower() for x in c.clients]:
+            return client
+        return c.clients[0] if c.clients else "all"
+
+    if args.json:
+        out = []
+        for c in ranked:
+            item = c.to_json()
+            cl = pick_client(c)
+            item["install"] = {
+                "client": cl,
+                "pwsh": f"pwsh -File installers/install.ps1 -Id {c.id} -Client {cl}",
+                "bash": f"bash installers/install.sh --id {c.id} --client {cl}",
+                "cli": f"python cli/pojia.py apply {c.id} --client {cl}",
+            }
+            out.append(item)
+        print(json.dumps(out, ensure_ascii=False, indent=2))
+        return 0
+
+    if not ranked:
+        print("没有匹配的条目。用 `pojia list` 看全部，或去掉 --model 再试。")
+        return 0
+    for c in ranked:
+        arm = "  —  " if c.strength is None else f"{c.strength:5.1f}"
+        print(f"{c.id:<32} {arm}  {c.status:<10} model={','.join(c.targets)}")
+        print(f"{'':<32}  → python cli/pojia.py apply {c.id} --client {pick_client(c)}")
+    print(f"\n推荐 {len(ranked)} 条（按匹配度与状态排序）")
+    return 0
+
+
 def cmd_stats(args) -> int:
     cards = load()
     st = cards_lib.stats(cards)
@@ -300,6 +357,13 @@ def main(argv: list[str] | None = None) -> int:
     p = sub.add_parser("search", help="全文检索")
     p.add_argument("term")
     p.set_defaults(func=cmd_search)
+
+    p = sub.add_parser("recommend", help="按模型/客户端推荐条目（agent 主入口）")
+    p.add_argument("--model")
+    p.add_argument("--client")
+    p.add_argument("--limit", type=int, default=0)
+    p.add_argument("--json", action="store_true")
+    p.set_defaults(func=cmd_recommend)
 
     p = sub.add_parser("apply", help="注入到客户端配置")
     p.add_argument("id")
