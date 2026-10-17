@@ -1,0 +1,110 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Baimuking/AI-Jailbreak/blob/main/schema/card.schema.json",
+  "title": "pojia-hub card",
+  "description": "一条破甲条目（prompt / tool / technique）的 YAML front matter 结构。整个仓库的索引、CLI、站点都只解析这个结构。",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "name", "kind", "status", "language", "targets", "archetype", "added", "updated"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]{1,63}$",
+      "description": "全局唯一 slug，必须等于文件名去掉 .md"
+    },
+    "name": { "type": "string", "minLength": 1, "maxLength": 120 },
+    "kind": {
+      "type": "string",
+      "enum": ["prompt", "tool", "technique"],
+      "description": "prompt=可直接注入的提示词；tool=客户端侧工具/安装器；technique=方法学文档"
+    },
+    "summary": { "type": "string", "maxLength": 400 },
+    "notes": {
+      "type": "string",
+      "maxLength": 2000,
+      "description": "维护者备注：适用场景、失效现象、注意事项。正文只放可注入提示词，不要把说明混进正文"
+    },
+    "category": {
+      "type": "string",
+      "enum": ["A", "B", "C", "D", "E", "F", "G", "Z"],
+      "description": "沿用采集口径分类：A 中文破甲生态 / B 中文越狱 / C 英文越狱工具 / D 提示注入 / E 去审查模型 / F 红队基准 / G 弱相关 / Z 其他"
+    },
+    "targets": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^[a-z0-9][a-z0-9._-]*$" },
+      "description": "适用模型 id，例如 gpt-5.6 / claude / deepseek-v4.1 / glm-5.3；all 表示模型无关"
+    },
+    "clients": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["all", "codex", "dsh", "claude-code", "cursor", "workbuddy", "zcode", "antigravity", "opencode", "hermes", "api", "chat"]
+      }
+    },
+    "archetype": {
+      "type": "string",
+      "enum": [
+        "identity-frame",
+        "hybrid-frame",
+        "lightweight",
+        "ctf",
+        "narrative",
+        "translation",
+        "abliteration",
+        "client-patch",
+        "methodology"
+      ]
+    },
+    "strength": {
+      "type": ["number", "null"],
+      "minimum": 0,
+      "maximum": 10,
+      "description": "实测 armor 分（0-10）。未跑过 harness 必须为 null，禁止填估计值"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["verified", "community", "unverified", "stale", "archived"],
+      "description": "verified=本仓库 harness 实测通过；community=社区提交未经实测；unverified=仅有目录信息；stale=模型升级后待复测；archived=上游失效"
+    },
+    "language": { "type": "string", "enum": ["zh", "en", "multi"] },
+    "verified": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "date": { "type": ["string", "null"] },
+        "asr": { "type": ["string", "null"], "maxLength": 32 },
+        "notes": { "type": ["string", "null"], "maxLength": 400 }
+      }
+    },
+    "usage": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["agents-md", "system-prompt", "dsh-plugin", "preset", "api", "script", "model", "doc"]
+        },
+        "install": { "type": ["string", "null"] },
+        "uninstall": { "type": ["string", "null"] }
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "repo": { "type": ["string", "null"], "pattern": "^[\\w.-]+/[\\w.-]+$" },
+        "path": { "type": ["string", "null"] },
+        "commit": { "type": ["string", "null"] },
+        "license": { "type": ["string", "null"] },
+        "url": { "type": ["string", "null"] }
+      }
+    },
+    "tags": { "type": "array", "items": { "type": "string", "pattern": "^[a-z0-9][a-z0-9._-]*$" } },
+    "added": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },
+    "updated": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },
+    "prompt_file": {
+      "type": ["string", "null"],
+      "description": "可选。正文默认就是本文件 front matter 之后的全部内容；仅当正文单独存放时才填相对路径"
+    }
+  }
+}

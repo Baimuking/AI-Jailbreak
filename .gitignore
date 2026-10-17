@@ -52,3 +52,6 @@ credentials/
 *.tmp
 tmp/
 .cache/
+
+# ---- pojia 本地状态（备份、评分产物，含端点信息，不入库）----
+.pojia/
