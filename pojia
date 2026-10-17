@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+# pojia CLI 包装器：把仓库根目录加入 PATH 后即可用 `pojia ...`
+exec python3 "$(dirname "$0")/cli/pojia.py" "$@"
