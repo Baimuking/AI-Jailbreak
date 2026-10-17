@@ -84,6 +84,17 @@ function esc(s) {
   }[m]));
 }
 
+const RAW = "https://raw.githubusercontent.com/Baimuking/AI-Jailbreak/main";
+
+function oneLineWin(id, client) {
+  return '$s="$env:TEMP\\pojia.ps1"; irm ' + RAW + "/installers/install.ps1 -OutFile $s; " +
+    "pwsh -File $s -Id " + id + " -Client " + client;
+}
+
+function oneLineUnix(id, client) {
+  return "curl -fsSL " + RAW + "/installers/install.sh | bash -s -- --id " + id + " --client " + client;
+}
+
 function renderCards() {
   const rows = state.data.cards.filter(matches);
   $("#count").textContent = rows.length;
@@ -94,9 +105,13 @@ function renderCards() {
   $("#content").innerHTML = rows
     .map((c) => {
       const armor = c.strength == null ? "—" : Number(c.strength).toFixed(1);
+      const client = (c.clients && c.clients[0]) || "codex";
       const src = c.source && c.source.repo
         ? `<a href="https://github.com/${esc(c.source.repo)}" target="_blank" rel="noopener">${esc(c.source.repo)}</a>`
         : "自建";
+      const isPrompt = c.kind === "prompt";
+      const win = oneLineWin(c.id, client);
+      const unix = oneLineUnix(c.id, client);
       return `
       <article class="card">
         <header>
@@ -109,9 +124,17 @@ function renderCards() {
           model ${esc((c.targets || []).join(", "))} · client ${esc((c.clients || []).join(", "))}
         </p>
         <p>${esc(c.summary || "")}</p>
+        ${isPrompt ? `<div class="oneline"><span>一键安装</span>
+          <code>${esc(unix)}</code>
+          <button data-one="${esc(c.id)}" data-os="unix">复制</button>
+        </div>
+        <div class="oneline"><span>Windows</span>
+          <code>${esc(win)}</code>
+          <button data-one="${esc(c.id)}" data-os="win">复制</button>
+        </div>` : ""}
         <div class="actions">
-          <button data-copy="${esc(c.id)}">复制正文</button>
-          ${c.kind === "prompt" ? `<button data-install="${esc(c.id)}">复制安装命令</button>` : ""}
+          ${isPrompt ? `<button data-copy="${esc(c.id)}">复制正文</button>` : ""}
+          ${isPrompt ? `<button data-cli="${esc(c.id)}">复制 CLI 命令</button>` : ""}
           <a class="ghost" href="https://github.com/Baimuking/AI-Jailbreak/blob/main/${esc(c.path)}" target="_blank" rel="noopener">源文件</a>
           <span class="src">来源：${src}</span>
         </div>
@@ -145,6 +168,35 @@ function renderCards() {
         setTimeout(() => (btn.textContent = "复制安装命令"), 1400);
       } catch {
         btn.textContent = "复制失败";
+      }
+    });
+  });
+
+  document.querySelectorAll("[data-one]").forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      const card = state.data.cards.find((c) => c.id === btn.dataset.one);
+      const client = (card && card.clients && card.clients[0]) || "codex";
+      const cmd = btn.dataset.os === "win" ? oneLineWin(card.id, client) : oneLineUnix(card.id, client);
+      try {
+        await navigator.clipboard.writeText(cmd);
+        btn.textContent = "已复制";
+        setTimeout(() => (btn.textContent = "复制"), 1300);
+      } catch {
+        btn.textContent = "失败";
+      }
+    });
+  });
+
+  document.querySelectorAll("[data-cli]").forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      const card = state.data.cards.find((c) => c.id === btn.dataset.cli);
+      const client = (card && card.clients && card.clients[0]) || "codex";
+      try {
+        await navigator.clipboard.writeText(`python cli/pojia.py apply ${card.id} --client ${client}`);
+        btn.textContent = "已复制";
+        setTimeout(() => (btn.textContent = "复制 CLI 命令"), 1300);
+      } catch {
+        btn.textContent = "失败";
       }
     });
   });

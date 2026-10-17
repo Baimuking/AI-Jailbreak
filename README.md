@@ -18,45 +18,66 @@
 | **全模型** | 每张卡声明 `targets`，从 `gpt-5.6` 到 `glm-5.3` 到本地 `qwen`；拿不准就落到 `all` 通用帧 |
 | **让 AI 装** | 你对 Claude Code 说一句「照 AI-Jailbreak 给我装上 GLM-5.3 的破甲」，它读 `AGENTS.md` 就能自己完成 |
 
-## 让别的 AI 自己装（这是重点）
+## 一行装好（不用 clone、不用 Python、不用记条目名）
 
-把下面这段直接粘进 **Claude Code / Codex / Cursor / 任意支持读仓库的 agent**：
+**Windows · PowerShell**
 
-```text
-读 https://raw.githubusercontent.com/Baimuking/AI-Jailbreak/main/llms.txt
-和 manifest.json，按我的目标模型 <你的模型> 和客户端 <你的客户端>，
-挑一条破甲装到当前项目里，装完告诉我改了哪个文件、怎么回滚。
+```powershell
+$s="$env:TEMP\pojia.ps1"; irm https://raw.githubusercontent.com/Baimuking/AI-Jailbreak/main/installers/install.ps1 -OutFile $s; pwsh -File $s -Model glm-5.3
 ```
 
-agent 会走这条链路：
+**macOS / Linux**
 
-```text
-llms.txt → manifest.json → 选卡（targets 命中 > all 兜底）
-        → python cli/pojia.py recommend --model <m> --client <c> --json
-        → python cli/pojia.py apply <id> --client <c>
+```bash
+curl -fsSL https://raw.githubusercontent.com/Baimuking/AI-Jailbreak/main/installers/install.sh | bash -s -- --model glm-5.3
 ```
 
-写入的是带标记的托管区块，**自动备份、可逐字回滚**，不会破坏你原有的 `AGENTS.md` / `CLAUDE.md`。
+把 `glm-5.3` 换成你的模型就行。仓库里没有这个模型？没关系，会自动回落到模型无关的通用帧。
+装完会告诉你怎么一句命令回滚：
 
-## 30 秒上手（你自己来）
+```bash
+python cli/pojia.py rollback glm-5.3-identity-frame     # 或 install.ps1 -Id <id> -Client codex -Uninstall
+```
+
+## 三种用法，挑最省事的
+
+| 方式 | 你要做的 | 适合 |
+|---|---|---|
+| **一行命令** | 复制上面那段，改个模型名 | 只想立刻用上 |
+| **交给 AI** | 把下面那段粘给 Claude Code / Codex | 不想碰终端 |
+| **装 CLI** | `git clone` 后用 `pojia install` 向导 | 要长期管理多个项目 |
+
+### 交给 AI（粘贴即用）
+
+```text
+读 https://raw.githubusercontent.com/Baimuking/AI-Jailbreak/main/llms.txt 和 manifest.json，
+按我的目标模型 <你的模型> 和客户端 <你的客户端>，挑一条破甲装到当前项目里，
+装完告诉我改了哪个文件、怎么回滚。
+```
+
+agent 走这条链路：
+
+```text
+llms.txt → manifest.json → pojia recommend --json → 选卡 → 写入托管区块
+```
+
+写入的是带标记的区块，**自动备份、可逐字回滚**，不会破坏你原有的 `AGENTS.md` / `CLAUDE.md`。
+
+### 装 CLI（长期用）
 
 ```bash
 git clone git@github.com:Baimuking/AI-Jailbreak.git && cd AI-Jailbreak
 
-# 1. 让仓库替你挑（也可以自己 list）
-python cli/pojia.py recommend --model glm-5.3 --client codex
-
-# 2. 看正文
-python cli/pojia.py show glm-5.3-identity-frame --prompt-only
-
-# 3. 装进当前项目（幂等 + 自动备份）
-python cli/pojia.py apply glm-5.3-identity-frame --client codex
-python cli/pojia.py rollback glm-5.3-identity-frame --client codex
+pojia install                       # 向导：选模型 → 选客户端 → 确认，两步搞定
+pojia apply --model glm-5.3         # 或者直接一条，自动挑卡 + 自动探测配置文件
+pojia status                        # 看当前项目装了哪些、备份在哪
+pojia rollback glm-5.3-identity-frame
 ```
 
-把仓库根目录加入 PATH 后可以直接用 `pojia`（Windows 用 `pojia.cmd`，类 Unix 用 `./pojia`）。
-没有 Python 也能用：`installers/install.ps1`（Windows）与 `installers/install.sh`（bash）是独立实现，
-与 CLI 共用同一套托管区块格式，可以互相识别与卸载。
+Windows 用 `pojia.cmd`，或者 `python cli/pojia.py <命令>`。
+
+**为什么这么设计**：所有命令都允许「只说模型」，因为它是最容易说清的东西。
+剩下的（选哪张卡、写哪个文件、要不要备份）由工具替你决定，而不是让你先做三道选择题。
 
 ## 覆盖面
 

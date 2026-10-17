@@ -11,14 +11,22 @@
 ## 三步流程
 
 ```bash
-# 1. 按目标模型和客户端挑一条（JSON 输出，便于你解析）
-python cli/pojia.py recommend --model <模型> --client <客户端> --json
+# 知道模型就够，不用记 id、不用指定客户端
+python cli/pojia.py apply --model <模型>
 
-# 2. 预览要写入的内容
-python cli/pojia.py show <id> --prompt-only
+# 不确定装什么时走向导（两个问题）
+python cli/pojia.py install
 
-# 3. 装进用户项目（幂等，自动备份到 .pojia/backups/）
-python cli/pojia.py apply <id> --client <客户端>
+# 装完检查 / 回滚
+python cli/pojia.py status
+python cli/pojia.py rollback <id>
+```
+
+用户没装 Python 或不想 clone 时，直接给他一行命令（零依赖，会自动下载正文）：
+
+```text
+Windows: $s="$env:TEMP\pojia.ps1"; irm https://raw.githubusercontent.com/Baimuking/AI-Jailbreak/main/installers/install.ps1 -OutFile $s; pwsh -File $s -Model <模型>
+Unix:    curl -fsSL https://raw.githubusercontent.com/Baimuking/AI-Jailbreak/main/installers/install.sh | bash -s -- --model <模型>
 ```
 
 没有 Python 时用安装器，二者共用同一套托管区块格式：

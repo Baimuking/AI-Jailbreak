@@ -57,6 +57,25 @@ def build() -> dict[str, str]:
         text = card.prompt_text
         if text:
             outputs[f"docs/prompts/{card.id}.txt"] = text.rstrip() + "\n"
+
+    # model -> card id 路由表（TSV）。给 install.ps1 / install.sh 做「只给 --model 也能装」，
+    # 二者都不该依赖 jq 或 JSON 解析。
+    routes: list[tuple[str, str]] = []
+    seen: set[str] = set()
+    fallback = ""
+    for card in sorted([c for c in loaded if c.kind == "prompt"], key=lambda x: x.id):
+        for target in card.targets:
+            if target == "all":
+                if not fallback:
+                    fallback = card.id
+                continue
+            if target in seen:
+                continue
+            seen.add(target)
+            routes.append((target, card.id))
+    if fallback:
+        routes.append(("*", fallback))
+    outputs["docs/route.tsv"] = "".join(f"{m}\t{i}\n" for m, i in routes)
     return outputs
 
 

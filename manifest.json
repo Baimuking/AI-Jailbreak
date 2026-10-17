@@ -74,7 +74,9 @@
         "client": "all",
         "pwsh": "pwsh -File installers/install.ps1 -Id all-translation-frame -Client all",
         "bash": "bash installers/install.sh --id all-translation-frame --client all",
-        "uninstall": "pwsh -File installers/install.ps1 -Id all-translation-frame -Client all -Uninstall"
+        "uninstall": "pwsh -File installers/install.ps1 -Id all-translation-frame -Client all -Uninstall",
+        "one_line_windows": "$s=\"$env:TEMP\\pojia.ps1\"; irm https://raw.githubusercontent.com/Baimuking/AI-Jailbreak/main/installers/install.ps1 -OutFile $s; pwsh -File $s -Id all-translation-frame -Client all",
+        "one_line_unix": "curl -fsSL https://raw.githubusercontent.com/Baimuking/AI-Jailbreak/main/installers/install.sh | bash -s -- --id all-translation-frame --client all"
       }
     },
     {
@@ -100,7 +102,9 @@
         "client": "claude-code",
         "pwsh": "pwsh -File installers/install.ps1 -Id claude-ctf-mode -Client claude-code",
         "bash": "bash installers/install.sh --id claude-ctf-mode --client claude-code",
-        "uninstall": "pwsh -File installers/install.ps1 -Id claude-ctf-mode -Client claude-code -Uninstall"
+        "uninstall": "pwsh -File installers/install.ps1 -Id claude-ctf-mode -Client claude-code -Uninstall",
+        "one_line_windows": "$s=\"$env:TEMP\\pojia.ps1\"; irm https://raw.githubusercontent.com/Baimuking/AI-Jailbreak/main/installers/install.ps1 -OutFile $s; pwsh -File $s -Id claude-ctf-mode -Client claude-code",
+        "one_line_unix": "curl -fsSL https://raw.githubusercontent.com/Baimuking/AI-Jailbreak/main/installers/install.sh | bash -s -- --id claude-ctf-mode --client claude-code"
       }
     },
     {
@@ -126,7 +130,9 @@
         "client": "dsh",
         "pwsh": "pwsh -File installers/install.ps1 -Id deepseek-v4.1-three-layer -Client dsh",
         "bash": "bash installers/install.sh --id deepseek-v4.1-three-layer --client dsh",
-        "uninstall": "pwsh -File installers/install.ps1 -Id deepseek-v4.1-three-layer -Client dsh -Uninstall"
+        "uninstall": "pwsh -File installers/install.ps1 -Id deepseek-v4.1-three-layer -Client dsh -Uninstall",
+        "one_line_windows": "$s=\"$env:TEMP\\pojia.ps1\"; irm https://raw.githubusercontent.com/Baimuking/AI-Jailbreak/main/installers/install.ps1 -OutFile $s; pwsh -File $s -Id deepseek-v4.1-three-layer -Client dsh",
+        "one_line_unix": "curl -fsSL https://raw.githubusercontent.com/Baimuking/AI-Jailbreak/main/installers/install.sh | bash -s -- --id deepseek-v4.1-three-layer --client dsh"
       }
     },
     {
@@ -152,7 +158,9 @@
         "client": "antigravity",
         "pwsh": "pwsh -File installers/install.ps1 -Id gemini-narrative-frame -Client antigravity",
         "bash": "bash installers/install.sh --id gemini-narrative-frame --client antigravity",
-        "uninstall": "pwsh -File installers/install.ps1 -Id gemini-narrative-frame -Client antigravity -Uninstall"
+        "uninstall": "pwsh -File installers/install.ps1 -Id gemini-narrative-frame -Client antigravity -Uninstall",
+        "one_line_windows": "$s=\"$env:TEMP\\pojia.ps1\"; irm https://raw.githubusercontent.com/Baimuking/AI-Jailbreak/main/installers/install.ps1 -OutFile $s; pwsh -File $s -Id gemini-narrative-frame -Client antigravity",
+        "one_line_unix": "curl -fsSL https://raw.githubusercontent.com/Baimuking/AI-Jailbreak/main/installers/install.sh | bash -s -- --id gemini-narrative-frame --client antigravity"
       }
     },
     {
@@ -179,7 +187,9 @@
         "client": "codex",
         "pwsh": "pwsh -File installers/install.ps1 -Id glm-5.3-identity-frame -Client codex",
         "bash": "bash installers/install.sh --id glm-5.3-identity-frame --client codex",
-        "uninstall": "pwsh -File installers/install.ps1 -Id glm-5.3-identity-frame -Client codex -Uninstall"
+        "uninstall": "pwsh -File installers/install.ps1 -Id glm-5.3-identity-frame -Client codex -Uninstall",
+        "one_line_windows": "$s=\"$env:TEMP\\pojia.ps1\"; irm https://raw.githubusercontent.com/Baimuking/AI-Jailbreak/main/installers/install.ps1 -OutFile $s; pwsh -File $s -Id glm-5.3-identity-frame -Client codex",
+        "one_line_unix": "curl -fsSL https://raw.githubusercontent.com/Baimuking/AI-Jailbreak/main/installers/install.sh | bash -s -- --id glm-5.3-identity-frame --client codex"
       }
     },
     {
@@ -205,7 +215,9 @@
         "client": "codex",
         "pwsh": "pwsh -File installers/install.ps1 -Id gpt-5.6-identity-frame -Client codex",
         "bash": "bash installers/install.sh --id gpt-5.6-identity-frame --client codex",
-        "uninstall": "pwsh -File installers/install.ps1 -Id gpt-5.6-identity-frame -Client codex -Uninstall"
+        "uninstall": "pwsh -File installers/install.ps1 -Id gpt-5.6-identity-frame -Client codex -Uninstall",
+        "one_line_windows": "$s=\"$env:TEMP\\pojia.ps1\"; irm https://raw.githubusercontent.com/Baimuking/AI-Jailbreak/main/installers/install.ps1 -OutFile $s; pwsh -File $s -Id gpt-5.6-identity-frame -Client codex",
+        "one_line_unix": "curl -fsSL https://raw.githubusercontent.com/Baimuking/AI-Jailbreak/main/installers/install.sh | bash -s -- --id gpt-5.6-identity-frame --client codex"
       }
     },
     {
@@ -230,7 +242,9 @@
         "client": "api",
         "pwsh": "pwsh -File installers/install.ps1 -Id grok-hybrid-frame -Client api",
         "bash": "bash installers/install.sh --id grok-hybrid-frame --client api",
-        "uninstall": "pwsh -File installers/install.ps1 -Id grok-hybrid-frame -Client api -Uninstall"
+        "uninstall": "pwsh -File installers/install.ps1 -Id grok-hybrid-frame -Client api -Uninstall",
+        "one_line_windows": "$s=\"$env:TEMP\\pojia.ps1\"; irm https://raw.githubusercontent.com/Baimuking/AI-Jailbreak/main/installers/install.ps1 -OutFile $s; pwsh -File $s -Id grok-hybrid-frame -Client api",
+        "one_line_unix": "curl -fsSL https://raw.githubusercontent.com/Baimuking/AI-Jailbreak/main/installers/install.sh | bash -s -- --id grok-hybrid-frame --client api"
       }
     },
     {
@@ -256,7 +270,9 @@
         "client": "codex",
         "pwsh": "pwsh -File installers/install.ps1 -Id kimi-ctf-mode -Client codex",
         "bash": "bash installers/install.sh --id kimi-ctf-mode --client codex",
-        "uninstall": "pwsh -File installers/install.ps1 -Id kimi-ctf-mode -Client codex -Uninstall"
+        "uninstall": "pwsh -File installers/install.ps1 -Id kimi-ctf-mode -Client codex -Uninstall",
+        "one_line_windows": "$s=\"$env:TEMP\\pojia.ps1\"; irm https://raw.githubusercontent.com/Baimuking/AI-Jailbreak/main/installers/install.ps1 -OutFile $s; pwsh -File $s -Id kimi-ctf-mode -Client codex",
+        "one_line_unix": "curl -fsSL https://raw.githubusercontent.com/Baimuking/AI-Jailbreak/main/installers/install.sh | bash -s -- --id kimi-ctf-mode --client codex"
       }
     },
     {
@@ -282,7 +298,9 @@
         "client": "api",
         "pwsh": "pwsh -File installers/install.ps1 -Id qwen-local-frame -Client api",
         "bash": "bash installers/install.sh --id qwen-local-frame --client api",
-        "uninstall": "pwsh -File installers/install.ps1 -Id qwen-local-frame -Client api -Uninstall"
+        "uninstall": "pwsh -File installers/install.ps1 -Id qwen-local-frame -Client api -Uninstall",
+        "one_line_windows": "$s=\"$env:TEMP\\pojia.ps1\"; irm https://raw.githubusercontent.com/Baimuking/AI-Jailbreak/main/installers/install.ps1 -OutFile $s; pwsh -File $s -Id qwen-local-frame -Client api",
+        "one_line_unix": "curl -fsSL https://raw.githubusercontent.com/Baimuking/AI-Jailbreak/main/installers/install.sh | bash -s -- --id qwen-local-frame --client api"
       }
     },
     {

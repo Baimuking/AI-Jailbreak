@@ -14,6 +14,8 @@ from . import sources as src_lib
 BEGIN = "<!-- BEGIN:INDEX -->"
 END = "<!-- END:INDEX -->"
 
+RAW_BASE = "https://raw.githubusercontent.com/Baimuking/AI-Jailbreak/main"
+
 KIND_LABEL = {"prompt": "提示词", "tool": "工具", "technique": "方法"}
 STATUS_LABEL = {
     "verified": "✅ verified",
@@ -256,6 +258,16 @@ def install_commands(card) -> dict:
         "pwsh": f"pwsh -File installers/install.ps1 -Id {card.id} -Client {client}",
         "bash": f"bash installers/install.sh --id {card.id} --client {client}",
         "uninstall": f"pwsh -File installers/install.ps1 -Id {card.id} -Client {client} -Uninstall",
+        # 零克隆：不需要先 clone 仓库，也不需要 Python
+        "one_line_windows": (
+            '$s="$env:TEMP\\pojia.ps1"; '
+            "irm https://raw.githubusercontent.com/Baimuking/AI-Jailbreak/main/installers/install.ps1 "
+            f"-OutFile $s; pwsh -File $s -Id {card.id} -Client {client}"
+        ),
+        "one_line_unix": (
+            "curl -fsSL https://raw.githubusercontent.com/Baimuking/AI-Jailbreak/main/installers/install.sh "
+            f"| bash -s -- --id {card.id} --client {client}"
+        ),
     }
 
 
@@ -318,8 +330,15 @@ def render_llms_txt(cards: list, data: dict) -> str:
     L.append("")
     L.append("1. 读 `manifest.json`，按用户的目标模型与客户端筛选 `cards[]`。")
     L.append("2. 选出 `kind == \"prompt\"` 且 `targets` 命中用户模型的那条；没有专属卡时用 `all` 兜底。")
-    L.append("3. 执行该条 `install.bash` 或 `install.pwsh`。区块写入用户项目根，自动备份，可 `install.uninstall` 卸载。")
+    L.append("3. 执行该条 `install.one_line_unix` 或 `install.one_line_windows`（零依赖，不用 clone 仓库）。")
     L.append("4. 只想看正文：`{id}` 对应 `docs/prompts/{id}.txt`。")
+    L.append("")
+    L.append("## 最短路径（给用户看的一句话）")
+    L.append("")
+    L.append("```text")
+    L.append("Windows: $s=\"$env:TEMP\\pojia.ps1\"; irm %s/installers/install.ps1 -OutFile $s; pwsh -File $s -Model <模型>" % RAW_BASE)
+    L.append("Unix:    curl -fsSL %s/installers/install.sh | bash -s -- --model <模型>" % RAW_BASE)
+    L.append("```")
     L.append("")
     L.append("## 机器可读入口")
     L.append("")
@@ -376,14 +395,22 @@ def render_agents_md(cards: list, data: dict) -> str:
     L.append("## 三步流程")
     L.append("")
     L.append("```bash")
-    L.append("# 1. 按目标模型和客户端挑一条（JSON 输出，便于你解析）")
-    L.append("python cli/pojia.py recommend --model <模型> --client <客户端> --json")
+    L.append("# 知道模型就够，不用记 id、不用指定客户端")
+    L.append("python cli/pojia.py apply --model <模型>")
     L.append("")
-    L.append("# 2. 预览要写入的内容")
-    L.append("python cli/pojia.py show <id> --prompt-only")
+    L.append("# 不确定装什么时走向导（两个问题）")
+    L.append("python cli/pojia.py install")
     L.append("")
-    L.append("# 3. 装进用户项目（幂等，自动备份到 .pojia/backups/）")
-    L.append("python cli/pojia.py apply <id> --client <客户端>")
+    L.append("# 装完检查 / 回滚")
+    L.append("python cli/pojia.py status")
+    L.append("python cli/pojia.py rollback <id>")
+    L.append("```")
+    L.append("")
+    L.append("用户没装 Python 或不想 clone 时，直接给他一行命令（零依赖，会自动下载正文）：")
+    L.append("")
+    L.append("```text")
+    L.append("Windows: $s=\"$env:TEMP\\pojia.ps1\"; irm %s/installers/install.ps1 -OutFile $s; pwsh -File $s -Model <模型>" % RAW_BASE)
+    L.append("Unix:    curl -fsSL %s/installers/install.sh | bash -s -- --model <模型>" % RAW_BASE)
     L.append("```")
     L.append("")
     L.append("没有 Python 时用安装器，二者共用同一套托管区块格式：")

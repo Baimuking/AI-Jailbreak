@@ -7,8 +7,15 @@
 
 1. 读 `manifest.json`，按用户的目标模型与客户端筛选 `cards[]`。
 2. 选出 `kind == "prompt"` 且 `targets` 命中用户模型的那条；没有专属卡时用 `all` 兜底。
-3. 执行该条 `install.bash` 或 `install.pwsh`。区块写入用户项目根，自动备份，可 `install.uninstall` 卸载。
+3. 执行该条 `install.one_line_unix` 或 `install.one_line_windows`（零依赖，不用 clone 仓库）。
 4. 只想看正文：`{id}` 对应 `docs/prompts/{id}.txt`。
+
+## 最短路径（给用户看的一句话）
+
+```text
+Windows: $s="$env:TEMP\pojia.ps1"; irm https://raw.githubusercontent.com/Baimuking/AI-Jailbreak/main/installers/install.ps1 -OutFile $s; pwsh -File $s -Model <模型>
+Unix:    curl -fsSL https://raw.githubusercontent.com/Baimuking/AI-Jailbreak/main/installers/install.sh | bash -s -- --model <模型>
+```
 
 ## 机器可读入口
 

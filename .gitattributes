@@ -25,3 +25,4 @@ llms.txt linguist-generated
 manifest.json linguist-generated
 site/data.json linguist-generated
 docs/index.json linguist-generated
+docs/route.tsv linguist-generated
