@@ -1,0 +1,47 @@
+name: validate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  cards:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: 校验卡片与 sources
+        run: python scripts/validate.py --strict
+
+      - name: 检查派生视图是否与卡片同步
+        run: python scripts/build_index.py --check
+
+      - name: CLI 自检
+        run: |
+          python cli/pojia.py doctor
+          python cli/pojia.py stats
+
+      - name: 安装器幂等性测试
+        shell: bash
+        run: |
+          set -e
+          tmp="$(mktemp -d)"
+          cd "$tmp"
+          printf 'existing content\n' > AGENTS.md
+          cp -r "$GITHUB_WORKSPACE"/{installers,docs} .
+          bash installers/install.sh --id gpt-5.6-identity-frame --target AGENTS.md > /dev/null
+          grep -q "pojia:begin gpt-5.6-identity-frame" AGENTS.md
+          bash installers/install.sh --id gpt-5.6-identity-frame --target AGENTS.md > /dev/null
+          test "$(grep -c 'pojia:begin gpt-5.6-identity-frame' AGENTS.md)" = "1"
+          bash installers/install.sh --id gpt-5.6-identity-frame --target AGENTS.md --uninstall > /dev/null
+          grep -q "pojia:begin" AGENTS.md && { echo "卸载不干净"; exit 1; } || true
+          echo "安装器测试通过"

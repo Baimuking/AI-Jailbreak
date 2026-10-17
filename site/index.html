@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Jailbreak · 破甲索引</title>
+<meta name="description" content="模型破甲提示词、客户端工具与红队方法的机器可读索引">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <h1>AI Jailbreak <span>破甲索引</span></h1>
+  <p class="lede">
+    按模型 × 客户端 × 形态 × 状态筛选。每条都能一键复制，或用
+    <code>pojia apply</code> 直接装进你的客户端。
+  </p>
+  <p class="stats">
+    <strong id="stat-cards">–</strong> 条卡片 ·
+    <strong id="stat-repos">–</strong> 个上游仓库 ·
+    <a href="https://github.com/Baimuking/AI-Jailbreak">GitHub 仓库</a>
+  </p>
+</header>
+
+<nav class="controls">
+  <input id="q" type="search" placeholder="搜索条目 / 模型 / 标签 / 正文关键字…" autocomplete="off">
+  <select data-filter="kind"><option value="all">全部类型</option></select>
+  <select data-filter="status"><option value="all">全部状态</option></select>
+  <select data-filter="model"><option value="all">全部模型</option></select>
+  <select data-filter="client"><option value="all">全部客户端</option></select>
+  <select data-filter="archetype"><option value="all">全部形态</option></select>
+  <div class="views">
+    <button data-view="cards" class="active">卡片</button>
+    <button data-view="repos">上游仓库</button>
+  </div>
+</nav>
+
+<main>
+  <p class="hint">当前 <strong id="count">0</strong> 条</p>
+  <div id="content"><p class="empty">加载中…</p></div>
+</main>
+
+<footer>
+  <p>
+    索引与表格由 <code>scripts/build_index.py</code> 生成，请勿手改。
+    评分口径见 <a href="https://github.com/Baimuking/AI-Jailbreak/blob/main/techniques/scoring-method.md">scoring-method</a>。
+    未实测的条目一律显示 <code>armor —</code>。
+  </p>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>

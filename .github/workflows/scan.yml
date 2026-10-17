@@ -1,0 +1,45 @@
+name: scan
+
+on:
+  schedule:
+    - cron: "17 3 * * 1"   # 每周一 03:17 UTC
+  workflow_dispatch:
+    inputs:
+      limit:
+        description: "每组查询最多取多少条"
+        required: false
+        default: "100"
+
+permissions:
+  contents: write
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: 采集上游仓库
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python scripts/scan.py --limit "${{ github.event.inputs.limit || '100' }}" --keep-missing
+
+      - name: 重建索引
+        run: python scripts/build_index.py
+
+      - name: 提交变化
+        run: |
+          git config user.name  "Baimuking"
+          git config user.email "341575255+Baimuking@users.noreply.github.com"
+          if git diff --quiet; then
+            echo "无变化"
+            exit 0
+          fi
+          git add -A
+          git commit -m "chore(scan): 更新上游仓库目录 $(date -u +%Y-%m-%d)"
+          git push
