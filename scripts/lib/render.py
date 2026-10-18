@@ -210,6 +210,8 @@ def build_index_payload(cards: list, data: dict) -> dict:
     generated_at 取自 sources 的采集时间（而不是当前时间），
     否则 build_index.py --check 每次都会判定产物过期。
     """
+    from . import models as models_lib  # 延迟导入，避免循环
+
     generated_at = (data or {}).get("generated_at") or _dt.date.today().isoformat()
     return {
         "generated_at": generated_at,
@@ -222,6 +224,7 @@ def build_index_payload(cards: list, data: dict) -> dict:
             },
             "sources": src_lib.summary(data),
         },
+        "models": models_lib.build_models(cards, data),
         "cards": [c.to_json() for c in sorted(cards, key=lambda x: x.id)],
         "repos": data.get("repos", []) if data else [],
     }
@@ -467,16 +470,103 @@ def render_agents_md(cards: list, data: dict) -> str:
 
 
 
+def render_models_md(rows: list[dict], total_repos: int, cards: list) -> str:
+    """docs/models.md：按模型一行，效果分与上游热度并排。"""
+    paths = {c.id: c.path for c in cards}
+    L: list[str] = []
+    L.append("# 按模型挑破甲")
+    L.append("")
+    L.append("> 单看效果分不知道挑哪个，单看星标不知道对应哪个模型——所以放一张表里。")
+    L.append("")
+    L.append("三个数字的含义：")
+    L.append("")
+    L.append("| 列 | 含义 | 怎么来的 |")
+    L.append("|---|---|---|")
+    L.append("| **结构分** | 破甲卡本身写得够不够狠（0-10） | 读文本结构算，见 [success-rate.md](../techniques/success-rate.md) |")
+    L.append("| **armor** | 该卡在真实模型上的实测分 | `scripts/score.py`；未跑过为 — |")
+    L.append("| **相关仓库 / ★合计** | 这个模型在上游生态里的热度 | GitHub 采集后按关键词匹配 |")
+    L.append("")
+    L.append(f"上游共 {total_repos} 个仓库；下表的「相关仓库」是其中命中该模型关键词的数量。")
+    L.append("**★ 是上游项目的热度，不是破甲成功率**，两者不要混读。")
+    L.append("")
+    L.append("口径说明：同时命中 ≥4 个模型家族的仓库（各类 `system_prompts_leaks` 合集、" )
+    L.append("跨模型工具箱）不计入任何单模型行——否则每一行都会被同一个大仓库抬高。它们仍完整保留在")
+    L.append("全量目录里。命中靠仓库名与简介的关键词匹配，会有误命中，仅供参考。")
+    L.append("")
+    L.append("| 模型 | 厂商 | 推荐卡 | 结构分 | armor | 相关仓库 | ★合计 | 最热仓库 |")
+    L.append("|---|---|---|---|---|---|---|---|")
+    for r in rows:
+        cid = r.get("card")
+        card = f"[`{cid}`](../{paths[cid]})" if cid and cid in paths else "—"
+        q = "—" if r.get("quality") is None else f"{r['quality']:.1f}"
+        a = "—" if r.get("armor") is None else f"{r['armor']:.1f}"
+        top = "—"
+        if r.get("top_repo"):
+            top = f"[{_esc(r['top_repo'])}](https://github.com/{r['top_repo']}) · ★{r['top_repo_stars']:,}"
+        L.append(
+            f"| {_esc(r['name'])} | {_esc(r['vendor'])} | {card} | {q} | {a} | "
+            f"{r['repos']} | {r['stars']:,} | {top} |"
+        )
+    L.append("")
+    L.append("## 怎么读这张表")
+    L.append("")
+    L.append("1. **先按模型找行**，拿到推荐卡。没有专属卡的模型用 `universal-max-chain`（模型无关，结构分最高）。")
+    L.append("2. **再看结构分**，低于 7 的说明还缺段落，可以用 `pojia show <id>` 查缺哪段。")
+    L.append("3. **★合计** 用来看这个模型的上游生态有多活跃——热度高意味着可参考的实现多，不代表某条词更好用。")
+    L.append("4. **armor 为空是正常的**，本仓库没有跑过实测就不会填数字。")
+    L.append("")
+    L.append("## 每个模型的热门前 5")
+    L.append("")
+    for r in rows:
+        if not r.get("top_repos"):
+            continue
+        L.append(f"**{_esc(r['name'])}**（{r['repos']} 个相关仓库，★{r['stars']:,}）")
+        L.append("")
+        for i, t in enumerate(r["top_repos"], 1):
+            L.append(f"{i}. [{_esc(t['full_name'])}](https://github.com/{t['full_name']}) · ★{t['stars']:,}")
+        L.append("")
+    return "\n".join(L)
+
+
+def _card_link(cid: str | None) -> str:
+    if not cid:
+        return ""
+    return f"{{card_path:{cid}}}"
+
+
+def _models_table(rows: list[dict], cards: list, limit: int = 10) -> str:
+    """README 里嵌入的紧凑版模型表。"""
+    paths = {c.id: c.path for c in cards}
+    out: list[str] = []
+    out.append("### 按模型挑（按上游热度排序，完整版见 [docs/models.md](docs/models.md)）\n")
+    out.append("| 模型 | 厂商 | 推荐卡 | 结构分 | armor | 相关仓库 | ★合计 |")
+    out.append("|---|---|---|---|---|---|---|")
+    for r in rows[:limit]:
+        cid = r.get("card")
+        card = f"[`{cid}`]({paths[cid]})" if cid and cid in paths else "—"
+        q = "—" if r.get("quality") is None else f"{r['quality']:.1f}"
+        a = "—" if r.get("armor") is None else f"{r['armor']:.1f}"
+        out.append(
+            f"| {_esc(r['name'])} | {_esc(r['vendor'])} | {card} | {q} | {a} | {r['repos']} | {r['stars']:,} |"
+        )
+    out.append("\n`结构分`是文本结构完备度（能算）；`armor`是真实模型实测分（要跑 harness）；`★合计`是上游生态热度（不是成功率）。\n")
+    return "\n".join(out)
+
+
 def render_readme(template: str, cards: list, card_stats: dict, data: dict) -> str:
     # 模板里 {{UPSTREAM}} 替换为实际采集到的上游仓库数，避免宣传数字与数据脱节
     n_up = len((data or {}).get("repos", []))
     template = template.replace("{{UPSTREAM}}", f"{n_up:,}")
 
+    from . import models as models_lib  # 延迟导入，避免循环
+
+    rows = models_lib.build_models(cards, data)
     block = "\n".join(
         [
             BEGIN,
             "",
             render_stats(card_stats, src_lib.summary(data) if data else None),
+            _models_table(rows, cards),
             render_tables(cards),
             render_sources(data),
             "_本区块由 `scripts/build_index.py` 自动生成，请勿手工编辑；改内容请改卡片或模板。_",

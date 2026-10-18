@@ -109,20 +109,14 @@ pojia apply universal-max-chain --client codex
 
 ## 覆盖面
 
-| 模型 | 专属卡 | 客户端 |
-|---|---|---|
-| OpenAI GPT-5.6 / GPT-6 Astra | ✅ `gpt-5.6-identity-frame` | codex, api, dsh |
-| Anthropic Claude | ✅ `claude-ctf-mode` | claude-code, api, chat |
-| Google Gemini 3.x | ✅ `gemini-narrative-frame` | antigravity, api, chat |
-| DeepSeek V4.1 / flash | ✅ `deepseek-v4.1-three-layer` | api, dsh, chat |
-| 智谱 GLM-5.3 | ✅ `glm-5.3-identity-frame` | zcode, codex, dsh, api |
-| Moonshot Kimi | ✅ `kimi-ctf-mode` | api, codex, chat |
-| xAI Grok 4.x | ✅ `grok-hybrid-frame` | api, chat |
-| 本地 Qwen / Llama / Gemma / GPT-OSS | ✅ `qwen-local-frame` | api, chat |
-| **任何其它模型** | ✅ `all-translation-frame`（模型无关） | all |
+完整清单（含每个模型的专属卡、结构分、相关上游仓库数与 ★合计）在
+**[docs/models.md](docs/models.md)**，站点的「按模型」视图是同一份数据的可筛选版。
 
-没有专属卡的模型不会被丢下：`all-translation-frame` 与 `techniques/frame-anatomy.md` 的六段组装法可以覆盖任意后端。
-新模型出来后，`pojia recommend --model <新模型>` 会自动回落到 `all` 兜底，不需要等仓库更新。
+当前覆盖 8 家厂商 + 本地模型：OpenAI（GPT-5.6 / GPT-6 Astra）、Anthropic Claude、
+Google Gemini、DeepSeek、智谱 GLM、Moonshot Kimi、xAI Grok、本地 Qwen / Llama / Gemma / GPT-OSS。
+
+没有专属卡的模型不会被丢下：`universal-max-chain` 是模型无关的兜底，也是结构分最高的那张。
+`pojia recommend --model <新模型>` 会自动回落到它，不需要等仓库更新。
 
 ## 为什么不是又一个 awesome-list
 
@@ -150,6 +144,23 @@ pojia apply universal-max-chain --client codex
 | 其中已实测（verified） | 0 |
 | 提示词 / 工具 / 方法 | 10 / 5 / 4 |
 | 上游仓库目录 | 1733 |
+
+### 按模型挑（按上游热度排序，完整版见 [docs/models.md](docs/models.md)）
+
+| 模型 | 厂商 | 推荐卡 | 结构分 | armor | 相关仓库 | ★合计 |
+|---|---|---|---|---|---|---|
+| Anthropic Claude | Anthropic | [`claude-ctf-mode`](prompts/anthropic/claude/claude-ctf-mode.md) | 5.7 | — | 135 | 168,318 |
+| Google Gemini 3.x | Google | [`gemini-narrative-frame`](prompts/google/gemini-3.x/gemini-narrative-frame.md) | 5.3 | — | 58 | 80,369 |
+| xAI Grok 4.x | xAI | [`grok-hybrid-frame`](prompts/xai/grok-4.x/grok-hybrid-frame.md) | 4.4 | — | 16 | 51,628 |
+| 任意模型（通用帧） | 模型无关 | [`universal-max-chain`](prompts/all/universal-max-chain.md) | 10.0 | — | 406 | 45,241 |
+| DeepSeek V4.1 / Flash | DeepSeek | [`deepseek-v4.1-three-layer`](prompts/deepseek/v4.1/deepseek-v4.1-three-layer.md) | 5.6 | — | 97 | 36,372 |
+| OpenAI GPT-5.6 / Codex | OpenAI | [`gpt-5.6-identity-frame`](prompts/openai/gpt-5.6/gpt-5.6-identity-frame.md) | 9.4 | — | 67 | 35,793 |
+| OpenAI GPT-6 Astra | OpenAI | [`gpt-5.6-identity-frame`](prompts/openai/gpt-5.6/gpt-5.6-identity-frame.md) | 9.4 | — | 10 | 2,081 |
+| 本地 Qwen / Llama / Gemma | 本地 / Local | [`qwen-local-frame`](prompts/local/qwen/qwen-local-frame.md) | 6.2 | — | 108 | 1,069 |
+| Moonshot Kimi | Moonshot | [`kimi-ctf-mode`](prompts/moonshot/kimi/kimi-ctf-mode.md) | 6.6 | — | 3 | 206 |
+| 智谱 GLM-5.3 | 智谱 / Zhipu | [`glm-5.3-identity-frame`](prompts/zhipu/glm-5.3/glm-5.3-identity-frame.md) | 9.4 | — | 13 | 142 |
+
+`结构分`是文本结构完备度（能算）；`armor`是真实模型实测分（要跑 harness）；`★合计`是上游生态热度（不是成功率）。
 
 ### 提示词条目
 
@@ -319,9 +330,10 @@ _本区块由 `scripts/build_index.py` 自动生成，请勿手工编辑；改�
 prompts/<厂商>/<模型>/<条目>.md      # 提示词卡片：YAML 头 + 可注入正文
 tools/<客户端>/<条目>.md             # 客户端工具卡片：安装/卸载命令
 techniques/*.md                      # 方法学：帧架构、防检测、评分口径
+docs/models.md                       # 按模型挑：效果分 + 上游热度并排
 sources/sources.json                 # 上游仓库目录（采集器产物）
 schema/card.schema.json              # 卡片结构，CI 强制校验
-scripts/                             # scan / build_index / validate / doctor
+scripts/                             # scan / build_index / validate / score
 cli/pojia.py                         # 命令行
 installers/                          # 一键安装器（PowerShell / bash）
 site/                                # GitHub Pages 筛选站

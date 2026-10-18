@@ -41,6 +41,418 @@
       }
     }
   },
+  "models": [
+    {
+      "key": "claude",
+      "name": "Anthropic Claude",
+      "vendor": "Anthropic",
+      "card": "claude-ctf-mode",
+      "card_name": "Claude CTF 授权模式帧",
+      "quality": 5.7,
+      "armor": null,
+      "status": "unverified",
+      "repos": 135,
+      "stars": 168318,
+      "top_repo": "BerriAI/litellm",
+      "top_repo_stars": 61439,
+      "top_repos": [
+        {
+          "full_name": "BerriAI/litellm",
+          "stars": 61439,
+          "url": "https://github.com/BerriAI/litellm"
+        },
+        {
+          "full_name": "elder-plinius/CL4R1T4S",
+          "stars": 51327,
+          "url": "https://github.com/elder-plinius/CL4R1T4S"
+        },
+        {
+          "full_name": "promptfoo/promptfoo",
+          "stars": 26084,
+          "url": "https://github.com/promptfoo/promptfoo"
+        },
+        {
+          "full_name": "NVIDIA/SkillSpector",
+          "stars": 20413,
+          "url": "https://github.com/NVIDIA/SkillSpector"
+        },
+        {
+          "full_name": "Goochbeater/Spiritual-Spell-Red-Teaming",
+          "stars": 4003,
+          "url": "https://github.com/Goochbeater/Spiritual-Spell-Red-Teaming"
+        }
+      ],
+      "excluded_generic": 14
+    },
+    {
+      "key": "gemini",
+      "name": "Google Gemini 3.x",
+      "vendor": "Google",
+      "card": "gemini-narrative-frame",
+      "card_name": "Gemini 叙事体隔离帧",
+      "quality": 5.3,
+      "armor": null,
+      "status": "unverified",
+      "repos": 58,
+      "stars": 80369,
+      "top_repo": "elder-plinius/CL4R1T4S",
+      "top_repo_stars": 51327,
+      "top_repos": [
+        {
+          "full_name": "elder-plinius/CL4R1T4S",
+          "stars": 51327,
+          "url": "https://github.com/elder-plinius/CL4R1T4S"
+        },
+        {
+          "full_name": "promptfoo/promptfoo",
+          "stars": 26084,
+          "url": "https://github.com/promptfoo/promptfoo"
+        },
+        {
+          "full_name": "ShadowHackrs/Jailbreaks-GPT-Gemini-deepseek-",
+          "stars": 1516,
+          "url": "https://github.com/ShadowHackrs/Jailbreaks-GPT-Gemini-deepseek-"
+        },
+        {
+          "full_name": "langgptai/awesome-gemini-prompts",
+          "stars": 493,
+          "url": "https://github.com/langgptai/awesome-gemini-prompts"
+        },
+        {
+          "full_name": "api7/aisix",
+          "stars": 197,
+          "url": "https://github.com/api7/aisix"
+        }
+      ],
+      "excluded_generic": 12
+    },
+    {
+      "key": "grok",
+      "name": "xAI Grok 4.x",
+      "vendor": "xAI",
+      "card": "grok-hybrid-frame",
+      "card_name": "Grok 直给混合帧",
+      "quality": 4.4,
+      "armor": null,
+      "status": "unverified",
+      "repos": 16,
+      "stars": 51628,
+      "top_repo": "elder-plinius/CL4R1T4S",
+      "top_repo_stars": 51327,
+      "top_repos": [
+        {
+          "full_name": "elder-plinius/CL4R1T4S",
+          "stars": 51327,
+          "url": "https://github.com/elder-plinius/CL4R1T4S"
+        },
+        {
+          "full_name": "Kutuyyy/Leaked-System-Prompt-AI",
+          "stars": 152,
+          "url": "https://github.com/Kutuyyy/Leaked-System-Prompt-AI"
+        },
+        {
+          "full_name": "01xor/ai-jailbreak-archive",
+          "stars": 58,
+          "url": "https://github.com/01xor/ai-jailbreak-archive"
+        },
+        {
+          "full_name": "The-AIE/the-gibson",
+          "stars": 41,
+          "url": "https://github.com/The-AIE/the-gibson"
+        },
+        {
+          "full_name": "regaan/basilisk",
+          "stars": 32,
+          "url": "https://github.com/regaan/basilisk"
+        }
+      ],
+      "excluded_generic": 11
+    },
+    {
+      "key": "universal",
+      "name": "任意模型（通用帧）",
+      "vendor": "模型无关",
+      "card": "universal-max-chain",
+      "card_name": "通用最大帧（全模型兜底·结构最全）",
+      "quality": 10.0,
+      "armor": null,
+      "status": "unverified",
+      "repos": 406,
+      "stars": 45241,
+      "top_repo": "MDX-Tom/gpt-instruct",
+      "top_repo_stars": 10275,
+      "top_repos": [
+        {
+          "full_name": "MDX-Tom/gpt-instruct",
+          "stars": 10275,
+          "url": "https://github.com/MDX-Tom/gpt-instruct"
+        },
+        {
+          "full_name": "Tencent/AI-Infra-Guard",
+          "stars": 6892,
+          "url": "https://github.com/Tencent/AI-Infra-Guard"
+        },
+        {
+          "full_name": "YuJunZhiXue/dsh-purge",
+          "stars": 6625,
+          "url": "https://github.com/YuJunZhiXue/dsh-purge"
+        },
+        {
+          "full_name": "Goochbeater/Spiritual-Spell-Red-Teaming",
+          "stars": 4003,
+          "url": "https://github.com/Goochbeater/Spiritual-Spell-Red-Teaming"
+        },
+        {
+          "full_name": "onehumanbeing/esp32-iphone-agent",
+          "stars": 2967,
+          "url": "https://github.com/onehumanbeing/esp32-iphone-agent"
+        }
+      ],
+      "excluded_generic": 0
+    },
+    {
+      "key": "deepseek",
+      "name": "DeepSeek V4.1 / Flash",
+      "vendor": "DeepSeek",
+      "card": "deepseek-v4.1-three-layer",
+      "card_name": "DeepSeek V4.1 三层重写帧",
+      "quality": 5.6,
+      "armor": null,
+      "status": "unverified",
+      "repos": 97,
+      "stars": 36372,
+      "top_repo": "promptfoo/promptfoo",
+      "top_repo_stars": 26084,
+      "top_repos": [
+        {
+          "full_name": "promptfoo/promptfoo",
+          "stars": 26084,
+          "url": "https://github.com/promptfoo/promptfoo"
+        },
+        {
+          "full_name": "YuJunZhiXue/dsh-purge",
+          "stars": 6625,
+          "url": "https://github.com/YuJunZhiXue/dsh-purge"
+        },
+        {
+          "full_name": "ShadowHackrs/Jailbreaks-GPT-Gemini-deepseek-",
+          "stars": 1516,
+          "url": "https://github.com/ShadowHackrs/Jailbreaks-GPT-Gemini-deepseek-"
+        },
+        {
+          "full_name": "FuRongJun-1999/dsh-memory",
+          "stars": 404,
+          "url": "https://github.com/FuRongJun-1999/dsh-memory"
+        },
+        {
+          "full_name": "yexi-by/dsh-unrestricted",
+          "stars": 315,
+          "url": "https://github.com/yexi-by/dsh-unrestricted"
+        }
+      ],
+      "excluded_generic": 7
+    },
+    {
+      "key": "gpt-5.6",
+      "name": "OpenAI GPT-5.6 / Codex",
+      "vendor": "OpenAI",
+      "card": "gpt-5.6-identity-frame",
+      "card_name": "GPT-5.6 身份系统帧 v3",
+      "quality": 9.4,
+      "armor": null,
+      "status": "unverified",
+      "repos": 67,
+      "stars": 35793,
+      "top_repo": "NVIDIA/SkillSpector",
+      "top_repo_stars": 20413,
+      "top_repos": [
+        {
+          "full_name": "NVIDIA/SkillSpector",
+          "stars": 20413,
+          "url": "https://github.com/NVIDIA/SkillSpector"
+        },
+        {
+          "full_name": "MDX-Tom/gpt-instruct",
+          "stars": 10275,
+          "url": "https://github.com/MDX-Tom/gpt-instruct"
+        },
+        {
+          "full_name": "chen0416ccc-cpu/codex-windows-fast-patch-skill",
+          "stars": 1294,
+          "url": "https://github.com/chen0416ccc-cpu/codex-windows-fast-patch-skill"
+        },
+        {
+          "full_name": "chAng-L19/codex-redteam-mode",
+          "stars": 1117,
+          "url": "https://github.com/chAng-L19/codex-redteam-mode"
+        },
+        {
+          "full_name": "FuDie0915/Super-Instruct-Codex-5.6",
+          "stars": 467,
+          "url": "https://github.com/FuDie0915/Super-Instruct-Codex-5.6"
+        }
+      ],
+      "excluded_generic": 11
+    },
+    {
+      "key": "gpt6-astra",
+      "name": "OpenAI GPT-6 Astra",
+      "vendor": "OpenAI",
+      "card": "gpt-5.6-identity-frame",
+      "card_name": "GPT-5.6 身份系统帧 v3",
+      "quality": 9.4,
+      "armor": null,
+      "status": "unverified",
+      "repos": 10,
+      "stars": 2081,
+      "top_repo": "scadastrangelove/awesome-ai-security-tools",
+      "top_repo_stars": 1662,
+      "top_repos": [
+        {
+          "full_name": "scadastrangelove/awesome-ai-security-tools",
+          "stars": 1662,
+          "url": "https://github.com/scadastrangelove/awesome-ai-security-tools"
+        },
+        {
+          "full_name": "xiaoguai009/codex-armor-toolkit",
+          "stars": 214,
+          "url": "https://github.com/xiaoguai009/codex-armor-toolkit"
+        },
+        {
+          "full_name": "aimeoa/hanshuang-codex",
+          "stars": 149,
+          "url": "https://github.com/aimeoa/hanshuang-codex"
+        },
+        {
+          "full_name": "Scott96866870/nebula-public",
+          "stars": 30,
+          "url": "https://github.com/Scott96866870/nebula-public"
+        },
+        {
+          "full_name": "abcdefgkk/GPT-6-Astra-codex-work-chat-jailbreak-",
+          "stars": 7,
+          "url": "https://github.com/abcdefgkk/GPT-6-Astra-codex-work-chat-jailbreak-"
+        }
+      ],
+      "excluded_generic": 7
+    },
+    {
+      "key": "qwen",
+      "name": "本地 Qwen / Llama / Gemma",
+      "vendor": "本地 / Local",
+      "card": "qwen-local-frame",
+      "card_name": "Qwen 本地模型重构帧",
+      "quality": 6.2,
+      "armor": null,
+      "status": "unverified",
+      "repos": 108,
+      "stars": 1069,
+      "top_repo": "AEON-7/Qwen3.6-27B-AEON-Ultimate-Uncensored-DFlash",
+      "top_repo_stars": 480,
+      "top_repos": [
+        {
+          "full_name": "AEON-7/Qwen3.6-27B-AEON-Ultimate-Uncensored-DFlash",
+          "stars": 480,
+          "url": "https://github.com/AEON-7/Qwen3.6-27B-AEON-Ultimate-Uncensored-DFlash"
+        },
+        {
+          "full_name": "DominikBucko/qwen38-flash-next-2x3090",
+          "stars": 118,
+          "url": "https://github.com/DominikBucko/qwen38-flash-next-2x3090"
+        },
+        {
+          "full_name": "hypersniper05/MCP-Image-Generator-Uncensored",
+          "stars": 101,
+          "url": "https://github.com/hypersniper05/MCP-Image-Generator-Uncensored"
+        },
+        {
+          "full_name": "promptfoo/promptfoo-action",
+          "stars": 75,
+          "url": "https://github.com/promptfoo/promptfoo-action"
+        },
+        {
+          "full_name": "vaporif/parry-guard",
+          "stars": 45,
+          "url": "https://github.com/vaporif/parry-guard"
+        }
+      ],
+      "excluded_generic": 3
+    },
+    {
+      "key": "kimi",
+      "name": "Moonshot Kimi",
+      "vendor": "Moonshot",
+      "card": "kimi-ctf-mode",
+      "card_name": "Kimi 渗透授权帧",
+      "quality": 6.6,
+      "armor": null,
+      "status": "unverified",
+      "repos": 3,
+      "stars": 206,
+      "top_repo": "YD-233/kimi-break",
+      "top_repo_stars": 180,
+      "top_repos": [
+        {
+          "full_name": "YD-233/kimi-break",
+          "stars": 180,
+          "url": "https://github.com/YD-233/kimi-break"
+        },
+        {
+          "full_name": "chenxingqiang/claude-code-open",
+          "stars": 26,
+          "url": "https://github.com/chenxingqiang/claude-code-open"
+        },
+        {
+          "full_name": "anaksholeh201011-source/ai-coding",
+          "stars": 0,
+          "url": "https://github.com/anaksholeh201011-source/ai-coding"
+        }
+      ],
+      "excluded_generic": 6
+    },
+    {
+      "key": "glm",
+      "name": "智谱 GLM-5.3",
+      "vendor": "智谱 / Zhipu",
+      "card": "glm-5.3-identity-frame",
+      "card_name": "GLM-5.3 身份系统帧",
+      "quality": 9.4,
+      "armor": null,
+      "status": "unverified",
+      "repos": 13,
+      "stars": 142,
+      "top_repo": "chiina66/glm5.3f-jailbreak",
+      "top_repo_stars": 45,
+      "top_repos": [
+        {
+          "full_name": "chiina66/glm5.3f-jailbreak",
+          "stars": 45,
+          "url": "https://github.com/chiina66/glm5.3f-jailbreak"
+        },
+        {
+          "full_name": "YuQii-111/ZCodeDeployNew",
+          "stars": 43,
+          "url": "https://github.com/YuQii-111/ZCodeDeployNew"
+        },
+        {
+          "full_name": "drowzeys/keys-vLLm.0.27.1-GLM-5.3-Flash-NVFP4-NVFP4KV-1M-Context-Abliterated",
+          "stars": 29,
+          "url": "https://github.com/drowzeys/keys-vLLm.0.27.1-GLM-5.3-Flash-NVFP4-NVFP4KV-1M-Context-Abliterated"
+        },
+        {
+          "full_name": "ArthurMonteiro08586/abliteration-farm",
+          "stars": 14,
+          "url": "https://github.com/ArthurMonteiro08586/abliteration-farm"
+        },
+        {
+          "full_name": "junpo2008/zcode-armor-breaker",
+          "stars": 5,
+          "url": "https://github.com/junpo2008/zcode-armor-breaker"
+        }
+      ],
+      "excluded_generic": 3
+    }
+  ],
   "cards": [
     {
       "id": "all-translation-frame",

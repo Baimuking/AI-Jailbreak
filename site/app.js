@@ -245,8 +245,103 @@ function renderRepos() {
     .join("");
 }
 
+function renderModels() {
+  const rows = state.data.models || [];
+  if (!rows.length) {
+    $("#content").innerHTML = '<p class="empty">没有模型数据，运行 build_index.py 生成。</p>';
+    return;
+  }
+  $("#count").textContent = rows.length;
+  $("#content").innerHTML = `
+    <p class="hint">
+      <strong>结构分</strong>是破甲卡本身的结构完备度（能算）；
+      <strong>armor</strong>是真实模型实测分（未跑过为 —）；
+      <strong>★合计</strong>是该模型在上游生态里的热度，<em>不是成功率</em>。
+      同时命中 ≥4 个模型家族的合集类仓库已从单模型热度中剔除。
+    </p>
+    <table class="model-table">
+      <thead>
+        <tr>
+          <th>模型</th><th>厂商</th><th>推荐卡</th>
+          <th class="num">结构分</th><th class="num">armor</th>
+          <th class="num">相关仓库</th><th class="num">★合计</th><th>最热仓库</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${rows
+          .map((r) => {
+            const q = r.quality == null ? "—" : Number(r.quality).toFixed(1);
+            const a = r.armor == null ? "—" : Number(r.armor).toFixed(1);
+            const card = r.card
+              ? `<button class="linklike" data-model-card="${esc(r.card)}">${esc(r.card)}</button>`
+              : "—";
+            const top = r.top_repo
+              ? `<a href="https://github.com/${esc(r.top_repo)}" target="_blank" rel="noopener">${esc(r.top_repo)}</a> ★${Number(r.top_repo_stars || 0).toLocaleString()}`
+              : "—";
+            return `<tr>
+              <td><button class="linklike" data-model="${esc(r.key)}">${esc(r.name)}</button></td>
+              <td>${esc(r.vendor)}</td>
+              <td>${card}</td>
+              <td class="num">${q}</td>
+              <td class="num">${a}</td>
+              <td class="num">${r.repos}</td>
+              <td class="num">${Number(r.stars || 0).toLocaleString()}</td>
+              <td class="desc">${top}</td>
+            </tr>`;
+          })
+          .join("")}
+      </tbody>
+    </table>`;
+
+  document.querySelectorAll("[data-model-card]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const card = state.data.cards.find((c) => c.id === btn.dataset.modelCard);
+      if (!card) return;
+      state.model = (card.targets || [])[0] || "all";
+      const sel = $('[data-filter="model"]');
+      if (sel) {
+        fillSelect('[data-filter="model"]', "model");
+        state.model = sel.value;
+      }
+      state.view = "cards";
+      document.querySelectorAll("[data-view]").forEach((b) => {
+        b.classList.toggle("active", b.dataset.view === "cards");
+      });
+      render();
+    });
+  });
+
+  document.querySelectorAll("[data-model]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const row = rows.find((r) => r.key === btn.dataset.model);
+      if (!row || !row.card) return;
+      const card = state.data.cards.find((c) => c.id === row.card);
+      if (!card) return;
+      state.q = "";
+      $("#q").value = "";
+      state.model = "all";
+      state.kind = "all";
+      state.status = "all";
+      state.client = "all";
+      state.archetype = "all";
+      ["kind", "status", "model", "client", "archetype"].forEach((k) => {
+        const el = $(`[data-filter="${k}"]`);
+        if (el) el.value = "all";
+      });
+      state.view = "cards";
+      document.querySelectorAll("[data-view]").forEach((b) => {
+        b.classList.toggle("active", b.dataset.view === "cards");
+      });
+      state.q = card.id;
+      $("#q").value = card.id;
+      render();
+    });
+  });
+}
+
 function render() {
   if (state.view === "cards") renderCards();
+  else if (state.view === "models") renderModels();
   else renderRepos();
 }
 

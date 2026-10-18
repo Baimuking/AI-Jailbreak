@@ -43,6 +43,9 @@ def build() -> dict[str, str]:
         "README.md": render.render_readme(template, loaded, st, data),
         "docs/index.json": json.dumps(payload, ensure_ascii=False, indent=2) + "\n",
         "site/data.json": json.dumps(payload, ensure_ascii=False, indent=2) + "\n",
+        "docs/models.md": render.render_models_md(
+            payload["models"], len(data.get("repos", [])), loaded
+        ),
         # 给"别的 AI"读的三份产物
         "manifest.json": json.dumps(manifest, ensure_ascii=False, indent=2) + "\n",
         "llms.txt": render.render_llms_txt(loaded, data),

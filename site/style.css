@@ -177,6 +177,46 @@ main { max-width: 1180px; margin: 0 auto; padding: 18px 24px 60px; }
 .cat th { color: var(--muted); font-weight: 500; }
 .cat .desc { color: var(--muted); }
 
+.model-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.model-table th,
+.model-table td {
+  text-align: left;
+  padding: 9px 10px;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+.model-table th {
+  color: var(--muted);
+  font-weight: 500;
+  background: var(--panel-2);
+  position: sticky;
+  top: 57px;
+}
+.model-table tbody tr:hover { background: rgba(122, 162, 255, 0.05); }
+.model-table .num { text-align: right; font-variant-numeric: tabular-nums; }
+.model-table .desc { color: var(--muted); font-size: 12px; }
+.linklike {
+  background: none;
+  border: none;
+  color: var(--accent);
+  font: inherit;
+  font-size: 13px;
+  padding: 0;
+  cursor: pointer;
+  text-align: left;
+  text-decoration: underline;
+  text-decoration-color: rgba(122, 162, 255, 0.35);
+}
+.linklike:hover { text-decoration-color: var(--accent); }
+
 footer {
   max-width: 1180px;
   margin: 0 auto;

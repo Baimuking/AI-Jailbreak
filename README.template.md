@@ -109,20 +109,14 @@ pojia apply universal-max-chain --client codex
 
 ## 覆盖面
 
-| 模型 | 专属卡 | 客户端 |
-|---|---|---|
-| OpenAI GPT-5.6 / GPT-6 Astra | ✅ `gpt-5.6-identity-frame` | codex, api, dsh |
-| Anthropic Claude | ✅ `claude-ctf-mode` | claude-code, api, chat |
-| Google Gemini 3.x | ✅ `gemini-narrative-frame` | antigravity, api, chat |
-| DeepSeek V4.1 / flash | ✅ `deepseek-v4.1-three-layer` | api, dsh, chat |
-| 智谱 GLM-5.3 | ✅ `glm-5.3-identity-frame` | zcode, codex, dsh, api |
-| Moonshot Kimi | ✅ `kimi-ctf-mode` | api, codex, chat |
-| xAI Grok 4.x | ✅ `grok-hybrid-frame` | api, chat |
-| 本地 Qwen / Llama / Gemma / GPT-OSS | ✅ `qwen-local-frame` | api, chat |
-| **任何其它模型** | ✅ `all-translation-frame`（模型无关） | all |
+完整清单（含每个模型的专属卡、结构分、相关上游仓库数与 ★合计）在
+**[docs/models.md](docs/models.md)**，站点的「按模型」视图是同一份数据的可筛选版。
 
-没有专属卡的模型不会被丢下：`all-translation-frame` 与 `techniques/frame-anatomy.md` 的六段组装法可以覆盖任意后端。
-新模型出来后，`pojia recommend --model <新模型>` 会自动回落到 `all` 兜底，不需要等仓库更新。
+当前覆盖 8 家厂商 + 本地模型：OpenAI（GPT-5.6 / GPT-6 Astra）、Anthropic Claude、
+Google Gemini、DeepSeek、智谱 GLM、Moonshot Kimi、xAI Grok、本地 Qwen / Llama / Gemma / GPT-OSS。
+
+没有专属卡的模型不会被丢下：`universal-max-chain` 是模型无关的兜底，也是结构分最高的那张。
+`pojia recommend --model <新模型>` 会自动回落到它，不需要等仓库更新。
 
 ## 为什么不是又一个 awesome-list
 
@@ -152,9 +146,10 @@ _运行 `python scripts/build_index.py` 生成。_
 prompts/<厂商>/<模型>/<条目>.md      # 提示词卡片：YAML 头 + 可注入正文
 tools/<客户端>/<条目>.md             # 客户端工具卡片：安装/卸载命令
 techniques/*.md                      # 方法学：帧架构、防检测、评分口径
+docs/models.md                       # 按模型挑：效果分 + 上游热度并排
 sources/sources.json                 # 上游仓库目录（采集器产物）
 schema/card.schema.json              # 卡片结构，CI 强制校验
-scripts/                             # scan / build_index / validate / doctor
+scripts/                             # scan / build_index / validate / score
 cli/pojia.py                         # 命令行
 installers/                          # 一键安装器（PowerShell / bash）
 site/                                # GitHub Pages 筛选站
