@@ -43,6 +43,12 @@ def _armor(value) -> str:
     return f"{float(value):.1f}"
 
 
+def _quality(value) -> str:
+    if value is None:
+        return "—"
+    return f"{float(value):.1f}"
+
+
 def _link(card) -> str:
     return f"[{_esc(card.data['name'])}]({card.path})"
 
@@ -72,7 +78,7 @@ def _source_cell(card) -> str:
 def render_tables(cards: list) -> str:
     prompts = sorted(
         [c for c in cards if c.kind == "prompt"],
-        key=lambda c: (-(c.strength or 0), c.data["name"].lower()),
+        key=lambda c: (-(c.quality_score() or 0), -(c.strength or 0), c.data["name"].lower()),
     )
     tools = sorted([c for c in cards if c.kind == "tool"], key=lambda c: c.data["name"].lower())
     techs = sorted([c for c in cards if c.kind == "technique"], key=lambda c: c.data["name"].lower())
@@ -82,8 +88,10 @@ def render_tables(cards: list) -> str:
     if not prompts:
         out.append("_暂无。_\n")
     else:
-        out.append("| 条目 | 目标模型 | 客户端 | 形态 | 状态 | armor | 来源 |")
-        out.append("|---|---|---|---|---|---|---|")
+        out.append("按结构完备度降序。`结构分` 由 `scripts/lib/quality.py` 从文本结构算出来（权重公开、可复核）；")
+        out.append("`armor` 是真实模型实测分，未跑过 harness 时为空。两者不是一回事，不要混看。\n")
+        out.append("| 条目 | 目标模型 | 客户端 | 形态 | 状态 | 结构分 | armor | 来源 |")
+        out.append("|---|---|---|---|---|---|---|---|")
         for c in prompts:
             out.append(
                 "| "
@@ -94,6 +102,7 @@ def render_tables(cards: list) -> str:
                         _client_names(c),
                         _esc(c.data.get("archetype", "—")),
                         STATUS_LABEL.get(c.status, c.status),
+                        _quality(c.quality_score()),
                         _armor(c.strength),
                         _source_cell(c),
                     ]
@@ -301,6 +310,7 @@ def build_manifest(cards: list, data: dict) -> dict:
                 "archetype": c.data.get("archetype"),
                 "status": c.status,
                 "strength": c.strength,
+                "quality": c.quality_score(),
                 "summary": c.data.get("summary", ""),
                 "path": c.path,
                 "install": install_commands(c) if c.kind == "prompt" else None,

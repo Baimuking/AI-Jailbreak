@@ -60,13 +60,18 @@ def build() -> dict[str, str]:
 
     # model -> card id 路由表（TSV）。给 install.ps1 / install.sh 做「只给 --model 也能装」，
     # 二者都不该依赖 jq 或 JSON 解析。
+    # `*` 兜底挑「结构完备度最高」的模型无关卡——即用户要的「成功率最高」那个默认。
     routes: list[tuple[str, str]] = []
     seen: set[str] = set()
+    prompt_cards = sorted([c for c in loaded if c.kind == "prompt"], key=lambda x: x.id)
     fallback = ""
-    for card in sorted([c for c in loaded if c.kind == "prompt"], key=lambda x: x.id):
+    fallback_rank: tuple = (0.0, "")
+    for card in prompt_cards:
         for target in card.targets:
             if target == "all":
-                if not fallback:
+                rank = (card.quality_score() or 0.0, card.id)
+                if rank > fallback_rank:
+                    fallback_rank = rank
                     fallback = card.id
                 continue
             if target in seen:

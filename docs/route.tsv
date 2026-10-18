@@ -23,4 +23,4 @@ qwen3.6	qwen-local-frame
 llama	qwen-local-frame
 gemma-4	qwen-local-frame
 gpt-oss-20b	qwen-local-frame
-*	all-translation-frame
+*	universal-max-chain

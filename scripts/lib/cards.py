@@ -13,7 +13,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Iterable
 
-from . import yamlmini
+from . import quality as quality_lib, yamlmini
 
 CARD_DIRS = ("prompts", "tools", "techniques")
 REQUIRED_KEYS = ("id", "name", "kind", "status", "language", "targets", "archetype", "added", "updated")
@@ -25,6 +25,7 @@ class Card:
     body: str
     path: str          # 相对仓库根的 POSIX 路径
     abs_path: Path
+    _qcache: dict = field(default_factory=dict, repr=False, compare=False)
 
     def __getattr__(self, item: str) -> Any:
         try:
@@ -67,11 +68,32 @@ class Card:
             return ""
         return target.read_text(encoding="utf-8").strip()
 
+    def quality(self) -> tuple[float | None, dict[str, float]]:
+        """结构完备度（0-10）。只对 kind=prompt 有意义。
+
+        缓存在 _qcache，不写进 data，避免污染 schema 校验与 manifest 输出。
+        """
+        if "q" in self._qcache:
+            return self._qcache["q"]
+        if self.kind != "prompt":
+            result: tuple[float | None, dict[str, float]] = (None, {})
+        else:
+            text = self.prompt_text
+            result = quality_lib.score_text(text) if text else (None, {})
+        self._qcache["q"] = result
+        return result
+
+    def quality_score(self) -> float | None:
+        return self.quality()[0]
+
     def to_json(self) -> dict:
         d = dict(self.data)
+        q, detail = self.quality()
         d["path"] = self.path
         d["body"] = self.body.strip()
         d["prompt_text"] = self.prompt_text
+        d["quality"] = q
+        d["quality_detail"] = detail
         return d
 
 

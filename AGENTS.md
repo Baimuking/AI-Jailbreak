@@ -56,6 +56,7 @@ bash installers/install.sh --id <id> --client <客户端>           # macOS / Li
 | `grok-hybrid-frame` | grok-4.7, grok-4.6, grok-build | api, chat | lightweight | unverified |
 | `kimi-ctf-mode` | kimi, kimi-code, moonshot-v1 | api, codex, chat | ctf | unverified |
 | `qwen-local-frame` | qwen3.6, llama, gemma-4, gpt-oss-20b | api, chat | lightweight | unverified |
+| `universal-max-chain` | all | all | hybrid-frame | unverified |
 
 支持的客户端：`antigravity`, `api`, `chat`, `claude-code`, `codex`, `cursor`, `dsh`, `zcode`。
 

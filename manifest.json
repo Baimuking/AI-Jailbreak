@@ -12,7 +12,7 @@
   },
   "coverage": {
     "upstream_repos": 1733,
-    "prompt_cards": 9,
+    "prompt_cards": 10,
     "models": [
       "all",
       "claude",
@@ -68,6 +68,7 @@
       "archetype": "translation",
       "status": "unverified",
       "strength": null,
+      "quality": 5.7,
       "summary": "把请求转成「源语言→目标语言」的翻译任务，输出天然不受生成侧审核约束。",
       "path": "prompts/all/all-translation-frame.md",
       "install": {
@@ -96,6 +97,7 @@
       "archetype": "ctf",
       "status": "unverified",
       "strength": null,
+      "quality": 5.7,
       "summary": "用「授权沙箱 + 威胁模型 + 上下文字段」把请求重构成红队演练任务，绕开 Constitutional 层的意图推断。",
       "path": "prompts/anthropic/claude/claude-ctf-mode.md",
       "install": {
@@ -124,6 +126,7 @@
       "archetype": "hybrid-frame",
       "status": "unverified",
       "strength": null,
+      "quality": 5.6,
       "summary": "针对 DeepSeek 的「先复述再判定」习惯，用三层改写把请求从判定管线里摘出去。",
       "path": "prompts/deepseek/v4.1/deepseek-v4.1-three-layer.md",
       "install": {
@@ -152,6 +155,7 @@
       "archetype": "narrative",
       "status": "unverified",
       "strength": null,
+      "quality": 5.3,
       "summary": "把技术请求包进虚构文档的引述语境，用「角色不在场」消解模型对自身输出的归属判断。",
       "path": "prompts/google/gemini-3.x/gemini-narrative-frame.md",
       "install": {
@@ -181,6 +185,7 @@
       "archetype": "identity-frame",
       "status": "unverified",
       "strength": null,
+      "quality": 9.4,
       "summary": "智谱系最吃「角色权威」，用高权威人格 + 明确职责边界压过 RLHF 的顺从倾向。",
       "path": "prompts/zhipu/glm-5.3/glm-5.3-identity-frame.md",
       "install": {
@@ -209,6 +214,7 @@
       "archetype": "identity-frame",
       "status": "unverified",
       "strength": null,
+      "quality": 9.4,
       "summary": "以「元规则优先 + 身份重定义 + 输出契约 + 反漂移自检」四段结构覆盖拒答层，适配 Codex / API 直连。",
       "path": "prompts/openai/gpt-5.6/gpt-5.6-identity-frame.md",
       "install": {
@@ -236,6 +242,7 @@
       "archetype": "lightweight",
       "status": "unverified",
       "strength": null,
+      "quality": 4.4,
       "summary": "Grok 本身拒答阈值低，本卡主要压「说教尾巴」与「先复述再回答」，用极简契约换输出密度。",
       "path": "prompts/xai/grok-4.x/grok-hybrid-frame.md",
       "install": {
@@ -264,6 +271,7 @@
       "archetype": "ctf",
       "status": "unverified",
       "strength": null,
+      "quality": 6.6,
       "summary": "以「授权渗透测试委托书」为外框，把请求转成工单执行，适配 Kimi Code 与 API。",
       "path": "prompts/moonshot/kimi/kimi-ctf-mode.md",
       "install": {
@@ -292,6 +300,7 @@
       "archetype": "lightweight",
       "status": "unverified",
       "strength": null,
+      "quality": 6.2,
       "summary": "本地模型（含 abliterated 权重）缺的不是授权而是形态，用结构契约替代权限声明。",
       "path": "prompts/local/qwen/qwen-local-frame.md",
       "install": {
@@ -301,6 +310,31 @@
         "uninstall": "pwsh -File installers/install.ps1 -Id qwen-local-frame -Client api -Uninstall",
         "one_line_windows": "$s=\"$env:TEMP\\pojia.ps1\"; irm https://raw.githubusercontent.com/Baimuking/AI-Jailbreak/main/installers/install.ps1 -OutFile $s; pwsh -File $s -Id qwen-local-frame -Client api",
         "one_line_unix": "curl -fsSL https://raw.githubusercontent.com/Baimuking/AI-Jailbreak/main/installers/install.sh | bash -s -- --id qwen-local-frame --client api"
+      }
+    },
+    {
+      "id": "universal-max-chain",
+      "name": "通用最大帧（全模型兜底·结构最全）",
+      "kind": "prompt",
+      "targets": [
+        "all"
+      ],
+      "clients": [
+        "all"
+      ],
+      "archetype": "hybrid-frame",
+      "status": "unverified",
+      "strength": null,
+      "quality": 10.0,
+      "summary": "六段结构全量堆叠 + 三形态切换 + 失效自愈表，模型无关。没有专属卡或专属卡失效时用它，跨模型命中率最高。",
+      "path": "prompts/all/universal-max-chain.md",
+      "install": {
+        "client": "all",
+        "pwsh": "pwsh -File installers/install.ps1 -Id universal-max-chain -Client all",
+        "bash": "bash installers/install.sh --id universal-max-chain --client all",
+        "uninstall": "pwsh -File installers/install.ps1 -Id universal-max-chain -Client all -Uninstall",
+        "one_line_windows": "$s=\"$env:TEMP\\pojia.ps1\"; irm https://raw.githubusercontent.com/Baimuking/AI-Jailbreak/main/installers/install.ps1 -OutFile $s; pwsh -File $s -Id universal-max-chain -Client all",
+        "one_line_unix": "curl -fsSL https://raw.githubusercontent.com/Baimuking/AI-Jailbreak/main/installers/install.sh | bash -s -- --id universal-max-chain --client all"
       }
     },
     {
@@ -316,6 +350,7 @@
       "archetype": "client-patch",
       "status": "unverified",
       "strength": null,
+      "quality": null,
       "summary": "生成纯正文到 .pojia/system-prompt.md，供 OpenAI 兼容接口的 system 字段直接读取。",
       "path": "tools/api/api-system-prompt.md",
       "install": null
@@ -335,6 +370,7 @@
       "archetype": "client-patch",
       "status": "unverified",
       "strength": null,
+      "quality": null,
       "summary": "写入项目根 CLAUDE.md，Claude Code 每次启动自动加载，支持多条目叠加与逐条卸载。",
       "path": "tools/claude-code/claude-md-block.md",
       "install": null
@@ -355,6 +391,7 @@
       "archetype": "client-patch",
       "status": "unverified",
       "strength": null,
+      "quality": null,
       "summary": "把条目写进项目根的 AGENTS.md，Codex 每次会话自动读取，无需手工粘贴。",
       "path": "tools/codex/codex-agents-md.md",
       "install": null
@@ -375,6 +412,7 @@
       "archetype": "client-patch",
       "status": "unverified",
       "strength": null,
+      "quality": null,
       "summary": "写入项目根 .cursorrules（或新版 .cursor/rules/*.mdc），Cursor 对话自动携带。",
       "path": "tools/cursor/cursor-rules-block.md",
       "install": null
@@ -395,6 +433,7 @@
       "archetype": "client-patch",
       "status": "unverified",
       "strength": null,
+      "quality": null,
       "summary": "写入工作区 AGENTS.md 让 DSH 每次会话自动加载；JSON preset 需手动合并（见下）。",
       "path": "tools/dsh/dsh-preset-block.md",
       "install": null
@@ -412,6 +451,7 @@
       "archetype": "methodology",
       "status": "unverified",
       "strength": null,
+      "quality": null,
       "summary": "把市面上的破甲词拆成可组合的六段：元规则、身份、能力、边界、输出契约、恢复。拆开后才能按模型换零件。",
       "path": "techniques/frame-anatomy.md",
       "install": null
@@ -429,6 +469,7 @@
       "archetype": "methodology",
       "status": "unverified",
       "strength": null,
+      "quality": null,
       "summary": "安装器与 CLI 共用的幂等注入格式，保证跨工具可识别、可逐字卸载、可多条目共存。",
       "path": "techniques/managed-block-spec.md",
       "install": null
@@ -446,8 +487,27 @@
       "archetype": "methodology",
       "status": "unverified",
       "strength": null,
+      "quality": null,
       "summary": "armor 分 = 输出契约遵守率 × 10。明确它衡量什么、不衡量什么，以及怎么复测与降级。",
       "path": "techniques/scoring-method.md",
+      "install": null
+    },
+    {
+      "id": "success-rate",
+      "name": "成功率怎么算：两级指标",
+      "kind": "technique",
+      "targets": [
+        "all"
+      ],
+      "clients": [
+        "all"
+      ],
+      "archetype": "methodology",
+      "status": "unverified",
+      "strength": null,
+      "quality": null,
+      "summary": "结构分（能算）与 armor 分（要测）分开，明确各自能回答什么问题，以及「默认装哪条」的排序规则。",
+      "path": "techniques/success-rate.md",
       "install": null
     }
   ]

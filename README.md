@@ -79,6 +79,34 @@ Windows 用 `pojia.cmd`，或者 `python cli/pojia.py <命令>`。
 **为什么这么设计**：所有命令都允许「只说模型」，因为它是最容易说清的东西。
 剩下的（选哪张卡、写哪个文件、要不要备份）由工具替你决定，而不是让你先做三道选择题。
 
+## 成功率最高的那条是哪条
+
+仓库里有两个指标，**别混看**：
+
+| 指标 | 怎么来 | 能回答什么 |
+|---|---|---|
+| **结构分** `quality` | 读文本结构算（权重公开，见 [success-rate.md](techniques/success-rate.md)） | 这条破甲六段结构写齐了没有 |
+| **armor** | `scripts/score.py` 打真实模型 | 在你指定的模型上，12 条探针过了几条 |
+
+目前**没有任何卡片跑过实测**（不编数字），所以排序用结构分。默认规则：
+
+- **不指定模型** → `universal-max-chain`（10.0 / 10，模型无关，含失效自愈表）
+- **指定了模型** → 该模型的专属卡（针对性通常强于通用帧，也更省 token）
+- **宁可长也要最稳** → 显式指定通用帧：
+
+```bash
+pojia apply universal-max-chain --client codex
+```
+
+`pojia show <id>` 会打印结构分和**缺失的段落**，方便你自己补：
+
+```
+结构分=6.6/10  结构较完整，缺 1-2 段
+  缺失段落: drift-check, model-hooks
+```
+
+一旦你跑过 `score.py`，实测分会在排序里接管结构分——**有数据的时候听数据，没数据的时候听结构**。
+
 ## 覆盖面
 
 | 模型 | 专属卡 | 客户端 |
@@ -118,24 +146,28 @@ Windows 用 `pojia.cmd`，或者 `python cli/pojia.py <命令>`。
 
 | 指标 | 数值 |
 |---|---|
-| 可用条目 | 17 |
+| 可用条目 | 19 |
 | 其中已实测（verified） | 0 |
-| 提示词 / 工具 / 方法 | 9 / 5 / 3 |
+| 提示词 / 工具 / 方法 | 10 / 5 / 4 |
 | 上游仓库目录 | 1733 |
 
 ### 提示词条目
 
-| 条目 | 目标模型 | 客户端 | 形态 | 状态 | armor | 来源 |
-|---|---|---|---|---|---|---|
-| [Claude CTF 授权模式帧](prompts/anthropic/claude/claude-ctf-mode.md) | `claude`, `claude-sonnet`, `claude-opus` | claude-code, api, chat | ctf | ⚪ unverified | — | — |
-| [DeepSeek V4.1 三层重写帧](prompts/deepseek/v4.1/deepseek-v4.1-three-layer.md) | `deepseek-v4.1`, `deepseek-v4.1-flash`, `deepseek-chat` | api, dsh, chat | hybrid-frame | ⚪ unverified | — | — |
-| [Gemini 叙事体隔离帧](prompts/google/gemini-3.x/gemini-narrative-frame.md) | `gemini-3.8`, `gemini-3.5-flash`, `gemini-pro` | antigravity, api, chat | narrative | ⚪ unverified | — | — |
-| [GLM-5.3 身份系统帧](prompts/zhipu/glm-5.3/glm-5.3-identity-frame.md) | `glm-5.3`, `glm-5.3-flash`, `glm-5.3-air` | zcode, codex, dsh, api | identity-frame | ⚪ unverified | — | — |
-| [GPT-5.6 身份系统帧 v3](prompts/openai/gpt-5.6/gpt-5.6-identity-frame.md) | `gpt-5.6`, `gpt-5.6-codex`, `gpt6-astra` | codex, api, dsh | identity-frame | ⚪ unverified | — | — |
-| [Grok 直给混合帧](prompts/xai/grok-4.x/grok-hybrid-frame.md) | `grok-4.7`, `grok-4.6`, `grok-build` | api, chat | lightweight | ⚪ unverified | — | — |
-| [Kimi 渗透授权帧](prompts/moonshot/kimi/kimi-ctf-mode.md) | `kimi`, `kimi-code`, `moonshot-v1` | api, codex, chat | ctf | ⚪ unverified | — | — |
-| [Qwen 本地模型重构帧](prompts/local/qwen/qwen-local-frame.md) | `qwen3.6`, `llama`, `gemma-4`, `gpt-oss-20b` | api, chat | lightweight | ⚪ unverified | — | — |
-| [通用翻译体帧（模型无关）](prompts/all/all-translation-frame.md) | `all` | all | translation | ⚪ unverified | — | — |
+按结构完备度降序。`结构分` 由 `scripts/lib/quality.py` 从文本结构算出来（权重公开、可复核）；
+`armor` 是真实模型实测分，未跑过 harness 时为空。两者不是一回事，不要混看。
+
+| 条目 | 目标模型 | 客户端 | 形态 | 状态 | 结构分 | armor | 来源 |
+|---|---|---|---|---|---|---|---|
+| [通用最大帧（全模型兜底·结构最全）](prompts/all/universal-max-chain.md) | `all` | all | hybrid-frame | ⚪ unverified | 10.0 | — | — |
+| [GLM-5.3 身份系统帧](prompts/zhipu/glm-5.3/glm-5.3-identity-frame.md) | `glm-5.3`, `glm-5.3-flash`, `glm-5.3-air` | zcode, codex, dsh, api | identity-frame | ⚪ unverified | 9.4 | — | — |
+| [GPT-5.6 身份系统帧 v3](prompts/openai/gpt-5.6/gpt-5.6-identity-frame.md) | `gpt-5.6`, `gpt-5.6-codex`, `gpt6-astra` | codex, api, dsh | identity-frame | ⚪ unverified | 9.4 | — | — |
+| [Kimi 渗透授权帧](prompts/moonshot/kimi/kimi-ctf-mode.md) | `kimi`, `kimi-code`, `moonshot-v1` | api, codex, chat | ctf | ⚪ unverified | 6.6 | — | — |
+| [Qwen 本地模型重构帧](prompts/local/qwen/qwen-local-frame.md) | `qwen3.6`, `llama`, `gemma-4`, `gpt-oss-20b` | api, chat | lightweight | ⚪ unverified | 6.2 | — | — |
+| [Claude CTF 授权模式帧](prompts/anthropic/claude/claude-ctf-mode.md) | `claude`, `claude-sonnet`, `claude-opus` | claude-code, api, chat | ctf | ⚪ unverified | 5.7 | — | — |
+| [通用翻译体帧（模型无关）](prompts/all/all-translation-frame.md) | `all` | all | translation | ⚪ unverified | 5.7 | — | — |
+| [DeepSeek V4.1 三层重写帧](prompts/deepseek/v4.1/deepseek-v4.1-three-layer.md) | `deepseek-v4.1`, `deepseek-v4.1-flash`, `deepseek-chat` | api, dsh, chat | hybrid-frame | ⚪ unverified | 5.6 | — | — |
+| [Gemini 叙事体隔离帧](prompts/google/gemini-3.x/gemini-narrative-frame.md) | `gemini-3.8`, `gemini-3.5-flash`, `gemini-pro` | antigravity, api, chat | narrative | ⚪ unverified | 5.3 | — | — |
+| [Grok 直给混合帧](prompts/xai/grok-4.x/grok-hybrid-frame.md) | `grok-4.7`, `grok-4.6`, `grok-build` | api, chat | lightweight | ⚪ unverified | 4.4 | — | — |
 
 ### 客户端工具
 
@@ -150,6 +182,7 @@ Windows 用 `pojia.cmd`，或者 `python cli/pojia.py <命令>`。
 ### 方法学
 
 - [armor 分口径 v1](techniques/scoring-method.md) — armor 分 = 输出契约遵守率 × 10。明确它衡量什么、不衡量什么，以及怎么复测与降级。
+- [成功率怎么算：两级指标](techniques/success-rate.md) — 结构分（能算）与 armor 分（要测）分开，明确各自能回答什么问题，以及「默认装哪条」的排序规则。
 - [托管区块规范](techniques/managed-block-spec.md) — 安装器与 CLI 共用的幂等注入格式，保证跨工具可识别、可逐字卸载、可多条目共存。
 - [破甲提示词的六段结构](techniques/frame-anatomy.md) — 把市面上的破甲词拆成可组合的六段：元规则、身份、能力、边界、输出契约、恢复。拆开后才能按模型换零件。
 

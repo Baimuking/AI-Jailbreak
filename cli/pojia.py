@@ -97,9 +97,14 @@ def resolve_target(rel: str) -> Path:
 
 
 def rank_prompts(cards: list, model: str | None, client: str | None) -> list:
-    """按「模型精确命中 > 客户端命中 > all 兜底 > 状态 > 分数」排序。"""
+    """排序：模型精确命中 > 通用兜底 > 客户端命中 > 实测 armor > 结构分 > 状态。
+
+    「成功率最高」在拿到实测数据前只能用结构完备度近似；一旦 .pojia/scores/ 有数据，
+    实测分就会接管排序（见 load_measured）。
+    """
     model = (model or "").lower()
     client = (client or "").lower()
+    measured = load_measured()
     pool = [c for c in cards if c.kind == "prompt"]
 
     def key(c) -> tuple:
@@ -108,13 +113,41 @@ def rank_prompts(cards: list, model: str | None, client: str | None) -> list:
         generic = 1 if "all" in targets else 0
         cl = [x.lower() for x in c.clients]
         cl_hit = 1 if client and (client in cl or "all" in cl) else 0
+        armor = measured.get(c.id)
         status_rank = {"verified": 4, "community": 3, "unverified": 2, "stale": 1, "archived": 0}.get(c.status, 0)
-        return (exact, cl_hit, generic, status_rank, c.strength or 0)
+        return (
+            exact,
+            generic,
+            cl_hit,
+            1 if armor is not None else 0,
+            armor if armor is not None else 0.0,
+            c.quality_score() or 0.0,
+            status_rank,
+        )
 
     ranked = sorted(pool, key=key, reverse=True)
     if model:
-        ranked = [c for c in ranked if key(c)[0] or key(c)[2]]
+        ranked = [c for c in ranked if key(c)[0] or key(c)[1]]
     return ranked
+
+
+def load_measured() -> dict[str, float]:
+    """读取 scripts/score.py 的产物（.pojia/scores/<id>.json），拿到实测 armor 分。"""
+    out: dict[str, float] = {}
+    d = Path.cwd() / ".pojia" / "scores"
+    if not d.is_dir():
+        d = ROOT / ".pojia" / "scores"
+    if not d.is_dir():
+        return out
+    for f in d.glob("*.json"):
+        try:
+            data = json.loads(f.read_text(encoding="utf-8"))
+        except (json.JSONDecodeError, OSError):
+            continue
+        armor = data.get("armor")
+        if isinstance(armor, (int, float)):
+            out[data.get("id") or f.stem] = float(armor)
+    return out
 
 
 def best_client_for(card, requested: str | None) -> str:
@@ -202,17 +235,20 @@ def cmd_list(args) -> int:
                 continue
         rows.append(c)
 
-    rows.sort(key=lambda c: (-(c.strength or 0), c.id))
+    rows.sort(key=lambda c: (-(c.quality_score() or 0), c.id))
     if args.json:
         print(json.dumps([c.to_json() for c in rows], ensure_ascii=False, indent=2))
         return 0
     if not rows:
         print("没有匹配的条目。放宽 --model / --client 再试。")
         return 0
+    print(f"{'id':<34} {'armor':>5} {'结构分':>6}  {'状态':<10} {'类型':<9} 名称")
     for c in rows:
         arm = "  —  " if c.strength is None else f"{c.strength:5.1f}"
-        print(f"{c.id:<34} {arm}  {c.status:<10} {c.kind:<9} {c.data['name']}")
-    print(f"\n共 {len(rows)} 条")
+        q = c.quality_score()
+        qs = "   — " if q is None else f"{q:6.1f}"
+        print(f"{c.id:<34} {arm} {qs}  {c.status:<10} {c.kind:<9} {c.data['name']}")
+    print(f"\n共 {len(rows)} 条   （结构分=文本结构完备度，armor=真实模型实测分）")
     return 0
 
 
@@ -226,8 +262,19 @@ def cmd_show(args) -> int:
         print(text)
         return 0
     d = card.data
+    q, detail = card.quality()
+    measured = load_measured().get(card.id)
     print(f"# {d['name']}  ({d['id']})")
-    print(f"kind={d['kind']}  archetype={d.get('archetype')}  status={d['status']}  armor={d.get('strength')}")
+    print(f"kind={d['kind']}  archetype={d.get('archetype')}  status={d['status']}")
+    print(f"armor(实测)={d.get('strength') if d.get('strength') is not None else '未实测'}"
+          + (f"  ← .pojia/scores 里有 {measured}" if measured is not None else ""))
+    if q is not None:
+        from lib import quality as qlib  # noqa: PLC0415
+
+        miss = qlib.missing(detail)
+        print(f"结构分={q:.1f}/10  {qlib.describe(q)}")
+        if miss:
+            print(f"  缺失段落: {', '.join(miss)}")
     print(f"targets={', '.join(card.targets) or '-'}  clients={', '.join(card.clients) or '-'}")
     src = d.get("source") or {}
     if src.get("repo"):
@@ -294,11 +341,14 @@ def cmd_recommend(args) -> int:
     if not ranked:
         print("没有匹配的条目。用 `pojia list` 看全部，或去掉 --model 再试。")
         return 0
+    print(f"{'id':<32} {'armor':>5} {'结构分':>6}  {'状态':<10} 目标模型")
     for c in ranked:
         arm = "  —  " if c.strength is None else f"{c.strength:5.1f}"
-        print(f"{c.id:<32} {arm}  {c.status:<10} model={','.join(c.targets)}")
+        q = c.quality_score()
+        qs = "   — " if q is None else f"{q:6.1f}"
+        print(f"{c.id:<32} {arm} {qs}  {c.status:<10} {','.join(c.targets)}")
         print(f"{'':<32}  → pojia apply {c.id} --client {best_client_for(c, args.client)}")
-    print(f"\n推荐 {len(ranked)} 条（按匹配度与状态排序）")
+    print(f"\n推荐 {len(ranked)} 条（按匹配度、实测分、结构完备度排序）")
     return 0
 
 
@@ -316,7 +366,9 @@ def _do_apply(cards: list, *, cid: str | None, model: str | None, client: str | 
             raise CliError("没有可用的破甲卡")
         card = ranked[0]
         if not quiet:
-            print(f"自动选择: {card.id}  ({card.data['name']})")
+            q = card.quality_score()
+            print(f"自动选择: {card.id}  ({card.data['name']})"
+                  + (f"  结构分 {q:.1f}/10" if q is not None else ""))
 
     prompt = card.prompt_text
     if not prompt:
@@ -508,10 +560,15 @@ def cmd_stats(args) -> int:
     st = cards_lib.stats(cards)
     data = src_lib.load(ROOT)
     ss = src_lib.summary(data)
+    prompts = [c for c in cards if c.kind == "prompt"]
+    scores = [c.quality_score() for c in prompts if c.quality_score() is not None]
+    avg_q = sum(scores) / len(scores) if scores else 0.0
+    measured = load_measured()
     print(f"条目总数      {st['total']}")
     print(f"按类型        {st['by_kind']}")
     print(f"按状态        {st['by_status']}")
-    print(f"按形态        {st['by_archetype']}")
+    print(f"平均结构分    {avg_q:.1f}/10 （{len(scores)} 条提示词）")
+    print(f"实测条目      {len(measured)} 条有 armor 数据")
     print(f"上游仓库      {ss['count']}（累计 ★{ss['stars_total']:,}）")
     print(f"采集时间      {ss.get('generated_at') or '—'}")
     return 0
