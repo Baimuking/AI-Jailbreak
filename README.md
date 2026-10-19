@@ -2,7 +2,7 @@
 
 **一个仓库，破甲所有模型。任何 AI 都能替你装。**
 
-> - **全网最全**：36 组中英文关键词全量扫描 GitHub，收录 **1,733** 个上游破甲项目，去重后仍持续增量采集
+> - **全网最全**：36 组中英文关键词全量扫描 GitHub，收录 **1,815** 个上游破甲项目，去重后仍持续增量采集
 > - **支持所有模型**：GPT / Claude / Gemini / DeepSeek / GLM / Kimi / Grok / Qwen 及本地模型，每家都有专属卡，任何模型都有通用帧兜底
 > - **让别的 AI 自己装**：仓库内置 `llms.txt` + `manifest.json` + `pojia recommend`，Claude Code、Codex、Cursor 克隆后可直接替你装好并回滚
 
@@ -14,7 +14,7 @@
 
 | 你要的 | 这里怎么做 |
 |---|---|
-| **最全** | 不只是提示词清单：上游 **1,733** 个项目逐个入库，头部项目整理成带适用面的结构化卡片 |
+| **最全** | 不只是提示词清单：上游 **1,815** 个项目逐个入库，头部项目整理成带适用面的结构化卡片 |
 | **全模型** | 每张卡声明 `targets`，从 `gpt-5.6` 到 `glm-5.3` 到本地 `qwen`；拿不准就落到 `all` 通用帧 |
 | **让 AI 装** | 你对 Claude Code 说一句「照 AI-Jailbreak 给我装上 GLM-5.3 的破甲」，它读 `AGENTS.md` 就能自己完成 |
 
@@ -143,22 +143,22 @@ Google Gemini、DeepSeek、智谱 GLM、Moonshot Kimi、xAI Grok、本地 Qwen /
 | 可用条目 | 19 |
 | 其中已实测（verified） | 0 |
 | 提示词 / 工具 / 方法 | 10 / 5 / 4 |
-| 上游仓库目录 | 1733 |
+| 上游仓库目录 | 1815 |
 
 ### 按模型挑（按上游热度排序，完整版见 [docs/models.md](docs/models.md)）
 
 | 模型 | 厂商 | 推荐卡 | 结构分 | armor | 相关仓库 | ★合计 |
 |---|---|---|---|---|---|---|
-| Anthropic Claude | Anthropic | [`claude-ctf-mode`](prompts/anthropic/claude/claude-ctf-mode.md) | 5.7 | — | 135 | 168,318 |
-| Google Gemini 3.x | Google | [`gemini-narrative-frame`](prompts/google/gemini-3.x/gemini-narrative-frame.md) | 5.3 | — | 58 | 80,369 |
-| xAI Grok 4.x | xAI | [`grok-hybrid-frame`](prompts/xai/grok-4.x/grok-hybrid-frame.md) | 4.4 | — | 16 | 51,628 |
-| 任意模型（通用帧） | 模型无关 | [`universal-max-chain`](prompts/all/universal-max-chain.md) | 10.0 | — | 406 | 45,241 |
-| DeepSeek V4.1 / Flash | DeepSeek | [`deepseek-v4.1-three-layer`](prompts/deepseek/v4.1/deepseek-v4.1-three-layer.md) | 5.6 | — | 97 | 36,372 |
-| OpenAI GPT-5.6 / Codex | OpenAI | [`gpt-5.6-identity-frame`](prompts/openai/gpt-5.6/gpt-5.6-identity-frame.md) | 9.4 | — | 67 | 35,793 |
-| OpenAI GPT-6 Astra | OpenAI | [`gpt-5.6-identity-frame`](prompts/openai/gpt-5.6/gpt-5.6-identity-frame.md) | 9.4 | — | 10 | 2,081 |
-| 本地 Qwen / Llama / Gemma | 本地 / Local | [`qwen-local-frame`](prompts/local/qwen/qwen-local-frame.md) | 6.2 | — | 108 | 1,069 |
-| Moonshot Kimi | Moonshot | [`kimi-ctf-mode`](prompts/moonshot/kimi/kimi-ctf-mode.md) | 6.6 | — | 3 | 206 |
-| 智谱 GLM-5.3 | 智谱 / Zhipu | [`glm-5.3-identity-frame`](prompts/zhipu/glm-5.3/glm-5.3-identity-frame.md) | 9.4 | — | 13 | 142 |
+| Anthropic Claude | Anthropic | [`claude-ctf-mode`](prompts/anthropic/claude/claude-ctf-mode.md) | 5.7 | — | 153 | 168,782 |
+| Google Gemini 3.x | Google | [`gemini-narrative-frame`](prompts/google/gemini-3.x/gemini-narrative-frame.md) | 5.3 | — | 58 | 80,547 |
+| xAI Grok 4.x | xAI | [`grok-hybrid-frame`](prompts/xai/grok-4.x/grok-hybrid-frame.md) | 4.4 | — | 16 | 51,663 |
+| 任意模型（通用帧） | 模型无关 | [`universal-max-chain`](prompts/all/universal-max-chain.md) | 10.0 | — | 426 | 46,711 |
+| DeepSeek V4.1 / Flash | DeepSeek | [`deepseek-v4.1-three-layer`](prompts/deepseek/v4.1/deepseek-v4.1-three-layer.md) | 5.6 | — | 107 | 37,275 |
+| OpenAI GPT-5.6 / Codex | OpenAI | [`gpt-5.6-identity-frame`](prompts/openai/gpt-5.6/gpt-5.6-identity-frame.md) | 9.4 | — | 68 | 36,071 |
+| OpenAI GPT-6 Astra | OpenAI | [`gpt-5.6-identity-frame`](prompts/openai/gpt-5.6/gpt-5.6-identity-frame.md) | 9.4 | — | 10 | 2,156 |
+| 本地 Qwen / Llama / Gemma | 本地 / Local | [`qwen-local-frame`](prompts/local/qwen/qwen-local-frame.md) | 6.2 | — | 120 | 1,074 |
+| Moonshot Kimi | Moonshot | [`kimi-ctf-mode`](prompts/moonshot/kimi/kimi-ctf-mode.md) | 6.6 | — | 3 | 210 |
+| 智谱 GLM-5.3 | 智谱 / Zhipu | [`glm-5.3-identity-frame`](prompts/zhipu/glm-5.3/glm-5.3-identity-frame.md) | 9.4 | — | 13 | 151 |
 
 `结构分`是文本结构完备度（能算）；`armor`是真实模型实测分（要跑 harness）；`★合计`是上游生态热度（不是成功率）。
 
@@ -199,116 +199,116 @@ Google Gemini、DeepSeek、智谱 GLM、Moonshot Kimi、xAI Grok、本地 Qwen /
 
 ### 上游仓库目录
 
-共收录 **1733** 个上游仓库（累计 ★526,479），采集时间 2026-10-17T23:23:50+0800，窗口 pushed_at ≥ 2026-08-16。
+共收录 **1815** 个上游仓库（累计 ★529,398），采集时间 2026-10-19T03:50:10+0000，窗口 pushed_at ≥ 2026-08-16。
 
 | 分类 | 含义 | 数量 |
 |---|---|---|
-| A | 中文破甲/破限生态 | 165 |
-| B | 中文越狱提示词/项目 | 52 |
-| C | 英文越狱工具与提示词库 | 254 |
-| D | 提示词注入/泄露 | 503 |
-| E | 去审查/abliteration 模型与数据 | 218 |
-| F | 红队评测/安全基准/防御 | 539 |
+| A | 中文破甲/破限生态 | 181 |
+| B | 中文越狱提示词/项目 | 53 |
+| C | 英文越狱工具与提示词库 | 263 |
+| D | 提示词注入/泄露 | 528 |
+| E | 去审查/abliteration 模型与数据 | 240 |
+| F | 红队评测/安全基准/防御 | 548 |
 | G | 弱相关 AI 安全 | 2 |
 
 <details>
 <summary>展开各分类 Top 仓库（每类前 10 个，完整清单见 docs/index.json）</summary>
 
 
-**A. 中文破甲/破限生态**（165 个）
+**A. 中文破甲/破限生态**（181 个）
 
 | # | 仓库 | ★ | 语言 | 最近 push | 简介 |
 |---|---|---|---|---|---|
-| 1 | [MDX-Tom/gpt-instruct](https://github.com/MDX-Tom/gpt-instruct) | 10,275 | Python | 2026-10-04 | A Codex jailbreak prompt and test pack for gpt. 针对 gpt 系列的 … |
-| 2 | [YuJunZhiXue/dsh-purge](https://github.com/YuJunZhiXue/dsh-purge) | 6,625 | JavaScript | 2026-10-12 | DeepSeek Harness 破甲：让所有模型都能破甲，不同模型可换不同提示词；默认提示词面向国模「小码酱」。Ja… |
-| 3 | [88lin/video_vip](https://github.com/88lin/video_vip) | 5,509 | JavaScript | 2026-10-15 | 全网VIP视频免费破解脚本，通过集成多个第三方解析接口，去除广告，解锁视频网站的会员限制，让用户享受免费的视频观看体验… |
+| 1 | [MDX-Tom/gpt-instruct](https://github.com/MDX-Tom/gpt-instruct) | 10,347 | Python | 2026-10-04 | A Codex jailbreak prompt and test pack for gpt. 针对 gpt 系列的 … |
+| 2 | [YuJunZhiXue/dsh-purge](https://github.com/YuJunZhiXue/dsh-purge) | 7,162 | JavaScript | 2026-10-19 | DeepSeek Harness 破甲：让所有模型都能破甲，不同模型可换不同提示词；默认提示词面向国模「小码酱」。Ja… |
+| 3 | [88lin/video_vip](https://github.com/88lin/video_vip) | 5,532 | JavaScript | 2026-10-19 | 全网VIP视频免费破解脚本，通过集成多个第三方解析接口，去除广告，解锁视频网站的会员限制，让用户享受免费的视频观看体验… |
 | 4 | [chen0416ccc-cpu/codex-windows-fast-patch-skill](https://github.com/chen0416ccc-cpu/codex-windows-fast-patch-skill) | 1,294 | PowerShell | 2026-10-17 | 此skills用于指导智能体在 Windows 上恢复 Codex Desktop 升级后失效的本地补丁和能力开关。（… |
-| 5 | [3641397194-wq/gpt6-Astra](https://github.com/3641397194-wq/gpt6-Astra) | 1,123 | JavaScript | 2026-10-16 | gpt6 Astra-claude-grok4.7-deepseekv4.1flash-glm5.3-gemini破甲… |
-| 6 | [chAng-L19/codex-redteam-mode](https://github.com/chAng-L19/codex-redteam-mode) | 1,117 | Python | 2026-10-09 | 针对于红队攻击思维做出的red team模式(破限项目，封号概不负责）##可自行适配其他Agent。项目问题请提iss… |
-| 7 | [FuDie0915/Super-Instruct-Codex-5.6](https://github.com/FuDie0915/Super-Instruct-Codex-5.6) | 467 | Python | 2026-09-01 | 针对GPT 5.6的破甲实验项目，基于Rust开发 |
-| 8 | [z91772524-ai/pojia-next](https://github.com/z91772524-ai/pojia-next) | 462 | Python | 2026-10-17 | 一个脚本搞定 DSH / WorkBuddy / ZCode / Codex / Cursor / Claude 六客… |
-| 9 | [cirosantilli/cirosantilli](https://github.com/cirosantilli/cirosantilli) | 318 | JavaScript | 2026-09-22 | 小粉红小朋友们，新issue 在这儿开： https://github.com/cirosantilli/china-… |
-| 10 | [yexi-by/dsh-unrestricted](https://github.com/yexi-by/dsh-unrestricted) | 315 | JavaScript | 2026-10-15 | DeepSeek Harness 提示词破限插件：通过系统提示词解除模型回答限制，深度适配 Web 与桌面端多模式及工… |
+| 5 | [3641397194-wq/gpt6-Astra](https://github.com/3641397194-wq/gpt6-Astra) | 1,148 | JavaScript | 2026-10-17 | gpt6 Astra-claude-grok4.7-deepseekv4.1flash-glm5.3-gemini破甲… |
+| 6 | [chAng-L19/codex-redteam-mode](https://github.com/chAng-L19/codex-redteam-mode) | 1,120 | Python | 2026-10-09 | 针对于红队攻击思维做出的red team模式(破限项目，封号概不负责）##可自行适配其他Agent。项目问题请提iss… |
+| 7 | [z91772524-ai/pojia-next](https://github.com/z91772524-ai/pojia-next) | 513 | Python | 2026-10-18 | 一个脚本搞定 DSH / WorkBuddy / ZCode / Codex / Cursor / Claude 六客… |
+| 8 | [FuDie0915/Super-Instruct-Codex-5.6](https://github.com/FuDie0915/Super-Instruct-Codex-5.6) | 467 | Python | 2026-09-01 | 针对GPT 5.6的破甲实验项目，基于Rust开发 |
+| 9 | [yexi-by/dsh-unrestricted](https://github.com/yexi-by/dsh-unrestricted) | 423 | JavaScript | 2026-10-18 | DeepSeek Harness 提示词破限插件：通过系统提示词解除模型回答限制，深度适配 Web 与桌面端多模式及工… |
+| 10 | [cirosantilli/cirosantilli](https://github.com/cirosantilli/cirosantilli) | 319 | JavaScript | 2026-09-22 | 小粉红小朋友们，新issue 在这儿开： https://github.com/cirosantilli/china-… |
 
 
-**B. 中文越狱提示词/项目**（52 个）
-
-| # | 仓库 | ★ | 语言 | 最近 push | 简介 |
-|---|---|---|---|---|---|
-| 1 | [ADWMC/helm-d](https://github.com/ADWMC/helm-d) | 226 | Python | 2026-10-03 | DeepSeek Harness 破甲一体化安全分析插件：Android · Web · Native · Proto… |
-| 2 | [YD-233/kimi-break](https://github.com/YD-233/kimi-break) | 180 | — | 2026-10-13 | Kimi Code 渗透破甲（Jailbreak）系统提示词 · AI 红队研究 |
-| 3 | [wangyingjie-wyj/hanshuang-pojia-release](https://github.com/wangyingjie-wyj/hanshuang-pojia-release) | 77 | — | 2026-10-07 | 寒霜破甲工具 · Windows x64 便携版完整包 (Git LFS) |
-| 4 | [chiina66/glm5.3f-jailbreak](https://github.com/chiina66/glm5.3f-jailbreak) | 45 | — | 2026-09-01 | glm5.3f破甲 |
-| 5 | [chiina66/deepseek-v4.1-jailbreak](https://github.com/chiina66/deepseek-v4.1-jailbreak) | 36 | — | 2026-09-10 | Q群 1109491426 ，会更新更多不同ai破甲提示词 |
-| 6 | [2908746449/hanshuang-mac](https://github.com/2908746449/hanshuang-mac) | 35 | Python | 2026-10-04 | 寒霜破甲工具 · macOS 桌面版（Windows 便携版移植） |
-| 7 | [Justinuse1/pojia-breaker](https://github.com/Justinuse1/pojia-breaker) | 35 | JavaScript | 2026-09-27 | Chinese-first LLM jailbreak benchmark & red-team toolkit \|… |
-| 8 | [NyaaCaster/NyaaChat](https://github.com/NyaaCaster/NyaaChat) | 27 | TypeScript | 2026-10-15 | 基于LLM分词结构原理进行提示词破甲的简易聊天工具 |
-| 9 | [mtecoYY/ai-baike](https://github.com/mtecoYY/ai-baike) | 27 | Python | 2026-09-07 | 持续记录 AI 相关内容 包括破甲 逆向等方案 |
-| 10 | [chiina66/deepseek-jailbreak](https://github.com/chiina66/deepseek-jailbreak) | 19 | — | 2026-09-01 | deepseek破甲提示词 |
-
-
-**C. 英文越狱工具与提示词库**（254 个）
+**B. 中文越狱提示词/项目**（53 个）
 
 | # | 仓库 | ★ | 语言 | 最近 push | 简介 |
 |---|---|---|---|---|---|
-| 1 | [onehumanbeing/esp32-iphone-agent](https://github.com/onehumanbeing/esp32-iphone-agent) | 2,967 | C | 2026-10-17 | Let an AI model use a real iPhone with a $7 ESP32: AirPlay … |
-| 2 | [CryptoAILab/Awesome-LM-SSP](https://github.com/CryptoAILab/Awesome-LM-SSP) | 2,087 | — | 2026-09-02 | A reading list for large models safety, security, and priva… |
-| 3 | [ShadowHackrs/Jailbreaks-GPT-Gemini-deepseek-](https://github.com/ShadowHackrs/Jailbreaks-GPT-Gemini-deepseek-) | 1,516 | — | 2026-10-17 | Jailbreaks GPT, Sora, Claude, Gemini ,deepseek this prompt … |
-| 4 | [EasyJailbreak/EasyJailbreak](https://github.com/EasyJailbreak/EasyJailbreak) | 926 | Python | 2026-09-01 | An easy-to-use Python framework to generate adversarial jai… |
+| 1 | [ADWMC/helm-d](https://github.com/ADWMC/helm-d) | 235 | Python | 2026-10-03 | DeepSeek Harness 破甲一体化安全分析插件：Android · Web · Native · Proto… |
+| 2 | [YD-233/kimi-break](https://github.com/YD-233/kimi-break) | 184 | — | 2026-10-13 | Kimi Code 渗透破甲（Jailbreak）系统提示词 · AI 红队研究 |
+| 3 | [wangyingjie-wyj/hanshuang-pojia-release](https://github.com/wangyingjie-wyj/hanshuang-pojia-release) | 89 | — | 2026-10-07 | 寒霜破甲工具 · Windows x64 便携版完整包 (Git LFS) |
+| 4 | [chiina66/glm5.3f-jailbreak](https://github.com/chiina66/glm5.3f-jailbreak) | 48 | — | 2026-09-01 | glm5.3f破甲 |
+| 5 | [2908746449/hanshuang-mac](https://github.com/2908746449/hanshuang-mac) | 38 | Python | 2026-10-04 | 寒霜破甲工具 · macOS 桌面版（Windows 便携版移植） |
+| 6 | [Justinuse1/pojia-breaker](https://github.com/Justinuse1/pojia-breaker) | 37 | JavaScript | 2026-09-27 | Chinese-first LLM jailbreak benchmark & red-team toolkit \|… |
+| 7 | [chiina66/deepseek-v4.1-jailbreak](https://github.com/chiina66/deepseek-v4.1-jailbreak) | 36 | — | 2026-09-10 | Q群 1109491426 ，会更新更多不同ai破甲提示词 |
+| 8 | [mtecoYY/ai-baike](https://github.com/mtecoYY/ai-baike) | 28 | Python | 2026-09-07 | 持续记录 AI 相关内容 包括破甲 逆向等方案 |
+| 9 | [NyaaCaster/NyaaChat](https://github.com/NyaaCaster/NyaaChat) | 27 | TypeScript | 2026-10-18 | 基于LLM分词结构原理进行提示词破甲的简易聊天工具 |
+| 10 | [chiina66/deepseek-jailbreak](https://github.com/chiina66/deepseek-jailbreak) | 20 | — | 2026-09-01 | deepseek破甲提示词 |
+
+
+**C. 英文越狱工具与提示词库**（263 个）
+
+| # | 仓库 | ★ | 语言 | 最近 push | 简介 |
+|---|---|---|---|---|---|
+| 1 | [onehumanbeing/esp32-iphone-agent](https://github.com/onehumanbeing/esp32-iphone-agent) | 3,153 | C | 2026-10-18 | Let an AI model use a real iPhone with a $7 ESP32: AirPlay … |
+| 2 | [CryptoAILab/Awesome-LM-SSP](https://github.com/CryptoAILab/Awesome-LM-SSP) | 2,088 | — | 2026-09-02 | A reading list for large models safety, security, and priva… |
+| 3 | [ShadowHackrs/Jailbreaks-GPT-Gemini-deepseek-](https://github.com/ShadowHackrs/Jailbreaks-GPT-Gemini-deepseek-) | 1,602 | — | 2026-10-17 | Jailbreaks GPT, Sora, Claude, Gemini ,deepseek this prompt … |
+| 4 | [EasyJailbreak/EasyJailbreak](https://github.com/EasyJailbreak/EasyJailbreak) | 928 | Python | 2026-09-01 | An easy-to-use Python framework to generate adversarial jai… |
 | 5 | [langgptai/awesome-gemini-prompts](https://github.com/langgptai/awesome-gemini-prompts) | 493 | — | 2026-08-25 | Gemini Prompts, Gemini 3 Prompts, jailbreak, LLM Prompts, L… |
-| 6 | [SuzumiyaAkizuki/DanbooruSearchOnline](https://github.com/SuzumiyaAkizuki/DanbooruSearchOnline) | 262 | Python | 2026-10-16 | 本项目提供一种基于语义匹配的 Danbooru 标签查找方案。用户可以通过输入日常语言或模糊描述，查找并匹配 Danb… |
+| 6 | [SuzumiyaAkizuki/DanbooruSearchOnline](https://github.com/SuzumiyaAkizuki/DanbooruSearchOnline) | 263 | Python | 2026-10-18 | 本项目提供一种基于语义匹配的 Danbooru 标签查找方案。用户可以通过输入日常语言或模糊描述，查找并匹配 Danb… |
 | 7 | [gaur-avvv/XGPT-WormGPT](https://github.com/gaur-avvv/XGPT-WormGPT) | 253 | Shell | 2026-09-17 | [New Update](Added Agentic-Mode, Dark-GODMode)The Real Blac… |
 | 8 | [wearetyomsmnv/Awesome-LLMSecOps](https://github.com/wearetyomsmnv/Awesome-LLMSecOps) | 165 | HTML | 2026-09-27 | LLM \| Agentic \| Security \| Operations in one github repo… |
 | 9 | [CattleZ/dance-video-to-prompt](https://github.com/CattleZ/dance-video-to-prompt) | 143 | Python | 2026-08-22 | 本地短视频反推 AI 视频生成提示词：抽帧、清晰度、节奏卡点、Agent Skill |
-| 10 | [d4ncboz/jailbreak](https://github.com/d4ncboz/jailbreak) | 120 | — | 2026-08-28 | BOZAGENTIC — Sovereign Alignment Research, Jailbreak Taxono… |
+| 10 | [owngoal-dev/WriteNow](https://github.com/owngoal-dev/WriteNow) | 122 | Swift | 2026-10-15 | AI tool within your hands. |
 
 
-**D. 提示词注入/泄露**（503 个）
+**D. 提示词注入/泄露**（528 个）
 
 | # | 仓库 | ★ | 语言 | 最近 push | 简介 |
 |---|---|---|---|---|---|
-| 1 | [asgeirtj/system_prompts_leaks](https://github.com/asgeirtj/system_prompts_leaks) | 69,789 | Python | 2026-10-16 | Documented system prompts from Anthropic - Claude Fable 5.1… |
-| 2 | [elder-plinius/CL4R1T4S](https://github.com/elder-plinius/CL4R1T4S) | 51,327 | — | 2026-09-22 | LEAKED SYSTEM PROMPTS FOR CHATGPT, CLAUDE, GEMINI, GROK, PE… |
-| 3 | [NVIDIA/SkillSpector](https://github.com/NVIDIA/SkillSpector) | 20,413 | Python | 2026-10-17 | Security scanner for AI agent skills. Detect vulnerabilitie… |
-| 4 | [jujumilk3/leaked-system-prompts](https://github.com/jujumilk3/leaked-system-prompts) | 14,964 | — | 2026-09-23 | Collection of leaked system prompts |
-| 5 | [LouisShark/chatgpt_system_prompt](https://github.com/LouisShark/chatgpt_system_prompt) | 10,809 | HTML | 2026-10-13 | A collection of GPT system prompts and various prompt injec… |
-| 6 | [superagent-ai/superagent](https://github.com/superagent-ai/superagent) | 6,767 | TypeScript | 2026-08-25 | Superagent protects your AI applications against prompt inj… |
+| 1 | [asgeirtj/system_prompts_leaks](https://github.com/asgeirtj/system_prompts_leaks) | 69,869 | Python | 2026-10-16 | Documented system prompts from Anthropic - Claude Fable 5.1… |
+| 2 | [elder-plinius/CL4R1T4S](https://github.com/elder-plinius/CL4R1T4S) | 51,359 | — | 2026-09-22 | LEAKED SYSTEM PROMPTS FOR CHATGPT, CLAUDE, GEMINI, GROK, PE… |
+| 3 | [NVIDIA/SkillSpector](https://github.com/NVIDIA/SkillSpector) | 20,504 | Python | 2026-10-17 | Security scanner for AI agent skills. Detect vulnerabilitie… |
+| 4 | [jujumilk3/leaked-system-prompts](https://github.com/jujumilk3/leaked-system-prompts) | 14,970 | — | 2026-09-23 | Collection of leaked system prompts |
+| 5 | [LouisShark/chatgpt_system_prompt](https://github.com/LouisShark/chatgpt_system_prompt) | 10,807 | HTML | 2026-10-13 | A collection of GPT system prompts and various prompt injec… |
+| 6 | [superagent-ai/superagent](https://github.com/superagent-ai/superagent) | 6,766 | TypeScript | 2026-08-25 | Superagent protects your AI applications against prompt inj… |
 | 7 | [EmbraceAGI/Awesome-AI-GPTs](https://github.com/EmbraceAGI/Awesome-AI-GPTs) | 1,204 | — | 2026-08-25 | Awesome AI GPTs, OpenAI GPTs, GPT-4, ChatGPT, GPTs, Prompts… |
-| 8 | [pipelab-org/pipelock](https://github.com/pipelab-org/pipelock) | 933 | Go | 2026-10-17 | Open-source AI agent firewall for MCP security and agent eg… |
-| 9 | [hashgraph-online/hol-guard](https://github.com/hashgraph-online/hol-guard) | 923 | Python | 2026-10-17 | Open-source antivirus for AI agents: block risky tools, sec… |
+| 8 | [pipelab-org/pipelock](https://github.com/pipelab-org/pipelock) | 937 | Go | 2026-10-19 | Open-source AI agent firewall for MCP security and agent eg… |
+| 9 | [hashgraph-online/hol-guard](https://github.com/hashgraph-online/hol-guard) | 933 | Python | 2026-10-19 | Open-source antivirus for AI agents: block risky tools, sec… |
 | 10 | [toby-bridges/api-relay-audit](https://github.com/toby-bridges/api-relay-audit) | 885 | Python | 2026-10-17 | Local security audit for AI API relays and LLM proxies: det… |
 
 
-**E. 去审查/abliteration 模型与数据**（218 个）
+**E. 去审查/abliteration 模型与数据**（240 个）
 
 | # | 仓库 | ★ | 语言 | 最近 push | 简介 |
 |---|---|---|---|---|---|
-| 1 | [p-e-w/heretic](https://github.com/p-e-w/heretic) | 35,599 | Python | 2026-10-17 | Fully automatic censorship removal for language models |
-| 2 | [Anil-matcha/Open-Generative-AI](https://github.com/Anil-matcha/Open-Generative-AI) | 30,644 | JavaScript | 2026-10-15 | Unrestricted Open-source alternative to AI video platforms … |
-| 3 | [techjarves/Uncensored-Local-AI-Multiplatform](https://github.com/techjarves/Uncensored-Local-AI-Multiplatform) | 1,365 | Dart | 2026-10-11 | A cross-platform Flutter app that runs uncensored, 100% off… |
-| 4 | [orailnoor/cross-platform-llm-client](https://github.com/orailnoor/cross-platform-llm-client) | 1,132 | C++ | 2026-10-12 | A unified cross-platform AI client supporting seamless tran… |
-| 5 | [JoasASantos/Offensive-Security-AI-Models](https://github.com/JoasASantos/Offensive-Security-AI-Models) | 692 | — | 2026-09-28 | Uncensored AI models or those fine-tuned for cybersecurity … |
-| 6 | [AEON-7/Qwen3.6-27B-AEON-Ultimate-Uncensored-DFlash](https://github.com/AEON-7/Qwen3.6-27B-AEON-Ultimate-Uncensored-DFlash) | 480 | Python | 2026-10-06 | Fully uncensored, capability-enhanced abliteration of Qwen3… |
-| 7 | [momori777/Artemis](https://github.com/momori777/Artemis) | 391 | Python | 2026-10-16 | 破限本地AI女友后宫，Agent+画图语音向量数据库+live2D+桌宠+酒馆角色卡导入+webchat，QQ+Tel… |
+| 1 | [p-e-w/heretic](https://github.com/p-e-w/heretic) | 35,788 | Python | 2026-10-17 | Fully automatic censorship removal for language models |
+| 2 | [Anil-matcha/Open-Generative-AI](https://github.com/Anil-matcha/Open-Generative-AI) | 30,794 | JavaScript | 2026-10-15 | Unrestricted Open-source alternative to AI video platforms … |
+| 3 | [techjarves/Uncensored-Local-AI-Multiplatform](https://github.com/techjarves/Uncensored-Local-AI-Multiplatform) | 1,373 | Dart | 2026-10-11 | A cross-platform Flutter app that runs uncensored, 100% off… |
+| 4 | [orailnoor/cross-platform-llm-client](https://github.com/orailnoor/cross-platform-llm-client) | 1,135 | C++ | 2026-10-12 | A unified cross-platform AI client supporting seamless tran… |
+| 5 | [JoasASantos/Offensive-Security-AI-Models](https://github.com/JoasASantos/Offensive-Security-AI-Models) | 698 | — | 2026-09-28 | Uncensored AI models or those fine-tuned for cybersecurity … |
+| 6 | [AEON-7/Qwen3.6-27B-AEON-Ultimate-Uncensored-DFlash](https://github.com/AEON-7/Qwen3.6-27B-AEON-Ultimate-Uncensored-DFlash) | 479 | Python | 2026-10-06 | Fully uncensored, capability-enhanced abliteration of Qwen3… |
+| 7 | [momori777/Artemis](https://github.com/momori777/Artemis) | 396 | Python | 2026-10-18 | 破限本地AI女友后宫，Agent+画图语音向量数据库+live2D+桌宠+酒馆角色卡导入+webchat，QQ+Tel… |
 | 8 | [wuwangzhang1216/abliterix](https://github.com/wuwangzhang1216/abliterix) | 258 | Python | 2026-09-28 | Automated alignment adjustment for LLMs — direct steering, … |
 | 9 | [Extraltodeus/J-Wash](https://github.com/Extraltodeus/J-Wash) | 232 | Python | 2026-09-06 | Jacobian-Brainwash : A manual alignment tool for large lang… |
 | 10 | [lordx64/phantom-kv](https://github.com/lordx64/phantom-kv) | 181 | Python | 2026-09-21 | Refusal removal as a loadable KV-cache graft — zero weight … |
 
 
-**F. 红队评测/安全基准/防御**（539 个）
+**F. 红队评测/安全基准/防御**（548 个）
 
 | # | 仓库 | ★ | 语言 | 最近 push | 简介 |
 |---|---|---|---|---|---|
-| 1 | [BerriAI/litellm](https://github.com/BerriAI/litellm) | 61,439 | Python | 2026-10-17 | The fastest, litest AI Gateway. Rust core with Python SDK. … |
-| 2 | [promptfoo/promptfoo](https://github.com/promptfoo/promptfoo) | 26,084 | TypeScript | 2026-10-17 | Test your prompts, agents, and RAGs. Red teaming/pentesting… |
-| 3 | [BoundaryML/baml](https://github.com/BoundaryML/baml) | 9,417 | Rust | 2026-10-17 | The programming language for agents |
-| 4 | [maximhq/bifrost](https://github.com/maximhq/bifrost) | 8,882 | Go | 2026-10-17 | Open-source, high-performance AI gateway that works as your… |
-| 5 | [guchangan1/All-Defense-Tool](https://github.com/guchangan1/All-Defense-Tool) | 8,156 | Python | 2026-10-13 | 本项目集成了全网优秀的攻防武器工具项目，包含自动化利用，子域名、目录扫描、端口扫描等信息收集工具，各大中间件、cms、… |
-| 6 | [guardrails-ai/guardrails](https://github.com/guardrails-ai/guardrails) | 7,532 | Python | 2026-10-15 | Adding guardrails to large language models. |
-| 7 | [NVIDIA-NeMo/Guardrails](https://github.com/NVIDIA-NeMo/Guardrails) | 7,316 | Python | 2026-10-15 | NeMo Guardrails is an open-source toolkit for easily adding… |
-| 8 | [katanemo/plano](https://github.com/katanemo/plano) | 7,091 | Rust | 2026-10-07 | Plano is an AI-native proxy server and data plane for agent… |
-| 9 | [Tencent/AI-Infra-Guard](https://github.com/Tencent/AI-Infra-Guard) | 6,892 | Python | 2026-10-17 | A full-stack AI Red Teaming platform securing AI ecosystems… |
-| 10 | [elder-plinius/T3MP3ST](https://github.com/elder-plinius/T3MP3ST) | 6,553 | TypeScript | 2026-09-08 | autonomous red teaming platform; multi-agent offensive-secu… |
+| 1 | [BerriAI/litellm](https://github.com/BerriAI/litellm) | 61,521 | Python | 2026-10-19 | The fastest, litest AI Gateway. Rust core with Python SDK. … |
+| 2 | [promptfoo/promptfoo](https://github.com/promptfoo/promptfoo) | 26,122 | TypeScript | 2026-10-19 | Test your prompts, agents, and RAGs. Red teaming/pentesting… |
+| 3 | [BoundaryML/baml](https://github.com/BoundaryML/baml) | 9,423 | Rust | 2026-10-18 | The programming language for agents |
+| 4 | [maximhq/bifrost](https://github.com/maximhq/bifrost) | 8,923 | Go | 2026-10-18 | Open-source, high-performance AI gateway that works as your… |
+| 5 | [guchangan1/All-Defense-Tool](https://github.com/guchangan1/All-Defense-Tool) | 8,161 | Python | 2026-10-19 | 本项目集成了全网优秀的攻防武器工具项目，包含自动化利用，子域名、目录扫描、端口扫描等信息收集工具，各大中间件、cms、… |
+| 6 | [guardrails-ai/guardrails](https://github.com/guardrails-ai/guardrails) | 7,534 | Python | 2026-10-15 | Adding guardrails to large language models. |
+| 7 | [NVIDIA-NeMo/Guardrails](https://github.com/NVIDIA-NeMo/Guardrails) | 7,324 | Python | 2026-10-15 | NeMo Guardrails is an open-source toolkit for easily adding… |
+| 8 | [katanemo/plano](https://github.com/katanemo/plano) | 7,092 | Rust | 2026-10-07 | Plano is an AI-native proxy server and data plane for agent… |
+| 9 | [Tencent/AI-Infra-Guard](https://github.com/Tencent/AI-Infra-Guard) | 6,909 | Python | 2026-10-19 | A full-stack AI Red Teaming platform securing AI ecosystems… |
+| 10 | [elder-plinius/T3MP3ST](https://github.com/elder-plinius/T3MP3ST) | 6,559 | TypeScript | 2026-09-08 | autonomous red teaming platform; multi-agent offensive-secu… |
 
 
 **G. 弱相关 AI 安全**（2 个）

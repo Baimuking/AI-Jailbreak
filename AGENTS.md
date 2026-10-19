@@ -72,4 +72,4 @@ bash installers/install.sh --id <id> --client <客户端>           # macOS / Li
 - `manifest.json`：全部卡片 + 安装命令 + 覆盖范围
 - `llms.txt`：本仓库的入口摘要
 - `docs/prompts/<id>.txt`：纯正文，可直接读入
-- `docs/index.json`：含正文全文与 1733 个上游仓库
+- `docs/index.json`：含正文全文与 1815 个上游仓库

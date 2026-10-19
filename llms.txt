@@ -1,7 +1,7 @@
 # AI Jailbreak
 
 > 全网最全的 AI 破甲合集：一个仓库，破甲所有模型。
-> 收录 1733 个上游破甲项目，10 条可一键安装的结构化破甲卡，覆盖 27 种模型标识。
+> 收录 1815 个上游破甲项目，10 条可一键安装的结构化破甲卡，覆盖 27 种模型标识。
 
 ## 你怎么用（给模型/agent 看）
 
@@ -20,7 +20,7 @@ Unix:    curl -fsSL https://raw.githubusercontent.com/Baimuking/AI-Jailbreak/mai
 ## 机器可读入口
 
 - [manifest.json](https://raw.githubusercontent.com/Baimuking/AI-Jailbreak/main/manifest.json): 全部卡片 + 安装命令 + 覆盖范围
-- [docs/index.json](https://raw.githubusercontent.com/Baimuking/AI-Jailbreak/main/docs/index.json): 含正文全文与 1733 个上游仓库
+- [docs/index.json](https://raw.githubusercontent.com/Baimuking/AI-Jailbreak/main/docs/index.json): 含正文全文与 1815 个上游仓库
 - [AGENTS.md](https://raw.githubusercontent.com/Baimuking/AI-Jailbreak/main/AGENTS.md): agent 操作手册
 - [schema/card.schema.json](https://raw.githubusercontent.com/Baimuking/AI-Jailbreak/main/schema/card.schema.json): 卡片结构
 
